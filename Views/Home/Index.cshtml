@@ -61,7 +61,8 @@
                                 </div>
                                 <div data-baseweb="block" data-testid="child-content-desktop" class="css-bKLnG">
                                     <form method="post">
-                                                                                     @Html.AntiForgeryToken()
+                                        @Html.AntiForgeryToken()
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
                                         <div class="css-cInfKi">
                                             <div>
@@ -71,11 +72,11 @@
                                                         <div class="css-UtXZf">
                                                             <div data-baseweb="block" class="css-bunVky">
                                                                 <div style="position: relative;">
-                                                                    <label class="css-dGWkvU"
+                                                                    @* <label class="css-dGWkvU"
                                                                         for="rv-pudo-select-0.t306yk7yoc">
                                                                         <p data-baseweb="typo-paragraphmedium"
                                                                             class="css-cNJbLP">Pickup location</p>
-                                                                    </label>
+                                                                    </label> *@
                                                                     <div data-uweb-guide-key="RV_PUDO_PICKUP_INPUT">
                                                                         <div data-baseweb="select"
                                                                             data-testid="pudo-select-v2"
@@ -101,15 +102,16 @@
                                                                                             aria-expanded="false"
                                                                                             aria-haspopup="listbox"
                                                                                             aria-label="Pickup location needs to be filled in"
-                                                                                            id="rv-pudo-select-0.t306yk7yoc"
                                                                                             role="combobox" tabindex="0"
                                                                                             data-testid="dotcom-ui.pickup-destination.input.pickup"
                                                                                             inputmode="text"
-                                                                                            name="Pickup"
+                                                                                            asp-for="Pickup"
                                                                                             class="css-fsnQlw"
-                                                                                            value="@(Model?.Pickup ?? String.Empty)">
+                                                                                            placeholder="Pickup location"
+                                                                                            required />
                                                                                         <div class="css-EEyoV"></div>
                                                                                     </div>
+                                                                                    <span class="text-danger" asp-validation-for="Pickup"></span>
 
                                                                                     <div data-testid="dotcom-ui.pickup-destination.placeholder.pickup"
                                                                                         class="css-jfDTkw"></div>
@@ -139,11 +141,11 @@
 
                                                             <div data-baseweb="block" class="css-ldbowJ">
                                                                 <div style="position: relative;">
-                                                                    <label class="css-dGWkvU"
+                                                                    @* <label class="css-dGWkvU"
                                                                         for="rv-pudo-select-0.x21rktt57v">
                                                                         <p data-baseweb="typo-paragraphmedium"
                                                                             class="css-cNJbLP">Dropoff location</p>
-                                                                    </label>
+                                                                    </label> *@
 
                                                                     <div
                                                                         data-uweb-guide-key="RV_PUDO_DESTINATION_INPUT">
@@ -165,20 +167,21 @@
                                                                                 <div data-tracking="disabled"
                                                                                     aria-label="destination location input"
                                                                                     class="css-kImiCK">
-                                                                                    <div class="css-kLKDje"><input
-                                                                                            aria-autocomplete="list"
+                                                                                    <div class="css-kLKDje">
+                                                                                        <input aria-autocomplete="list"
                                                                                             aria-expanded="false"
                                                                                             aria-haspopup="listbox"
                                                                                             aria-label="Dropoff location needs to be filled in"
-                                                                                            id="rv-pudo-select-0.x21rktt57v"
                                                                                             role="combobox" tabindex="0"
                                                                                             data-testid="dotcom-ui.pickup-destination.input.destination.drop0"
                                                                                             inputmode="text"
-                                                                                            name="Dropoff"
+                                                                                            asp-for="Dropoff"
                                                                                             class="css-fsnQlw"
-                                                                                            value="@(Model?.Dropoff ?? String.Empty)">
+                                                                                            placeholder="Dropoff location"
+                                                                                            required />
                                                                                         <div class="css-EEyoV"></div>
                                                                                     </div>
+                                                                                    <span class="text-danger" asp-validation-for="Dropoff"></span>
 
                                                                                     <div data-testid="dotcom-ui.pickup-destination.placeholder.destination.drop0"
                                                                                         class="css-jfDTkw"></div>
@@ -213,18 +216,16 @@
                                                                     <div class="css-cYTjpz">
                                                                         <div data-baseweb="input" class="css-hnpcQn">
                                                                             <div data-baseweb="base-input"
-                                                                                class="css-gKbRfz"><input
-                                                                                    aria-label="Select a date."
+                                                                                class="css-gKbRfz">
+                                                                                <input aria-label="Select a date."
                                                                                     aria-invalid="false"
-                                                                                    aria-required="false"
                                                                                     autocomplete="on"
-                                                                                    id="trip-form-date-picker-0.hwc12kfh17n"
-                                                                                    inputmode="none" name="Date"
-                                                                                    placeholder="Today" type="date"
+                                                                                    asp-for="Date" type="date"
                                                                                     data-testid="dotcom-ui.date-picker.input"
                                                                                     class="css-eSRvYO"
-                                                                                    value="@(Model?.Date?.ToString("yyyy-MM-dd") ?? String.Empty)"
-                                                                                    aria-describedby="uid1"></div>
+                                                                                    aria-describedby="uid1" required />
+                                                                            </div>
+                                                                            <span class="text-danger" asp-validation-for="Date"></span>
                                                                         </div>
                                                                     </div>
 
@@ -267,8 +268,7 @@
                                                                         <div class="css-ehJLpI">
                                                                             <div class="css-hQrlmS">
                                                                                 <div>
-                                                                                    <input type="time" name="Time"
-                                                                                        value="@(Model?.Time?.ToString(@"hh\:mm") ?? String.Empty)"
+                                                                                    <input asp-for="Time" type="time"
                                                                                         style="margin-left: 22px" />
 
                                                                                 </div>
@@ -298,7 +298,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div>
+                                                    @* <div>
                                                         <p data-baseweb="typo-paragraphmedium" class="css-dTqljZ">
                                                             Destination suggestions</p>
                                                         <div data-testid="RevealAnimationWrapper"
@@ -352,23 +352,37 @@
                                                                 </div>
                                                             </button>
                                                         </div>
-                                                    </div>
+                                                    </div> *@
                                                     <div style="margin:12px 0;">
-                                                        <button type="submit" class="css-cxqKro">Request ride</button>
+                                                        <div style="margin:12px 0;" class="css-jmfNpg">
+                                                                <input asp-for="Name" type="text" class="css-fsnQlw" placeholder="Name" required />
+                                                                <span class="text-danger" asp-validation-for="Name"></span>
+                                                            </div>
+                                                            <div style="margin:12px 0;" class="css-jmfNpg">
+                                                                <input asp-for="Contact" type="text" class="css-fsnQlw" placeholder="Contact(number/FBMessengerLink)" required />
+                                                                <span class="text-danger" asp-validation-for="Contact"></span>
+                                                            </div>
+
+
+
+                                                        <div style="margin:12px 0;">
+                                                            <button type="submit" class="css-cxqKro">Request
+                                                                ride</button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                         @if (ViewData["Submitted"] != null)
-                                                {
-                                                    <div style="margin-top:12px;padding:8px;border:1px solid #ccc;">
-                                                        <strong>Submitted:</strong>
-                                                        <div>Pickup: @Model?.Pickup</div>
-                                                        <div>Dropoff: @Model?.Dropoff</div>
-                                                        <div>Date: @Model?.Date?.ToString("yyyy-MM-dd")</div>
-                                                        <div>Time: @Model?.Time?.ToString(@"hh\:mm")</div>
-                                                    </div>
-                                                }
+                                        @if (ViewData["Submitted"] != null)
+                                        {
+                                            <div style="margin-top:12px;padding:8px;border:1px solid #ccc;">
+                                                <strong>Submitted:</strong>
+                                                <div>Pickup: @Model?.Pickup</div>
+                                                <div>Dropoff: @Model?.Dropoff</div>
+                                                <div>Date: @Model?.Date?.ToString("yyyy-MM-dd")</div>
+                                                <div>Time: @Model?.Time?.ToString(@"hh\:mm")</div>
+                                            </div>
+                                        }
                                     </form>
 
 
@@ -498,6 +512,27 @@
 
                                                     <div class="css-jkbjYp"></div>
                                                 </div>
+
+                                                @* Mobile: small form for Name & Contact inside mobile layout so users on phones can submit these fields too *@
+                                                <form method="post" class="css-mobile-contact-form" style="margin-top:8px;">
+                                                    @Html.AntiForgeryToken()
+                                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                                    <div style="margin:8px 0;">
+                                                        <label style="display:block;">Name<br />
+                                                            <input asp-for="Name" class="css-fsnQlw" required />
+                                                            <span class="text-danger" asp-validation-for="Name"></span>
+                                                        </label>
+                                                    </div>
+                                                    <div style="margin:8px 0;">
+                                                        <label style="display:block;">Contact (FB messenger link / number)<br />
+                                                            <input asp-for="Contact" class="css-fsnQlw" required />
+                                                            <span class="text-danger" asp-validation-for="Contact"></span>
+                                                        </label>
+                                                    </div>
+                                                    <div style="margin:12px 0;">
+                                                        <button type="submit" class="css-cxqKro">Request ride</button>
+                                                    </div>
+                                                </form>
                                                 <div data-baseweb="block" class="css-cvpIEi css-ebzWAP"
                                                     data-testid="dotcom-ui.data-time-picker-container.default">
                                                     <div class="css-cYTjpz">

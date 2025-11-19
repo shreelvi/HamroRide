@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: mssql-server
+    restart: unless-stopped
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+      # Set a strong SA password in a .env file or override at runtime.
+      # Example .env key: SA_PASSWORD=YourStr0ng!Passw0rd
+      SA_PASSWORD: "Password@1"
+    ports:
+      - "1433:1433"
