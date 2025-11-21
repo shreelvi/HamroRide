@@ -3135,7 +3135,7 @@ label {
     }
 }
 
-.css-bKLnG {
+/* .css-bKLnG {
     display: none;
 }
 
@@ -3149,7 +3149,7 @@ label {
     .css-bKLnG {
         display: none;
     }
-}
+} */
 
 @media screen and (min-width: 1136px) {
     .css-bKLnG {
@@ -4081,7 +4081,7 @@ label {
     z-index: 1;
 }
 
-@media screen and (min-width: 320px) {
+/* @media screen and (min-width: 320px) {
     .css-hHlspe {
         display: none;
         -ms-grid-column: 1;
@@ -4116,7 +4116,7 @@ label {
         -ms-grid-row-span: -2;
         grid-row: 1/-1;
     }
-}
+} */
 
 .css-eENBEE {
     position: relative;

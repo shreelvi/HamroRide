@@ -26,5 +26,7 @@ namespace gurujiRide.Models
         public DateTime? Date { get; set; }
         // Time (time of day) - bound from <input type="time">
         public TimeSpan? Time { get; set; }
+        // When the request was created (UTC)
+        public DateTime CreatedAt { get; set; }
     }
 }

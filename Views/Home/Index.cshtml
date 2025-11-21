@@ -1,7 +1,116 @@
-﻿@model gurujiRide.Models.RideRequest
+﻿@model gurujiRide.Models.IndexViewModel
 @{
     ViewData["Title"] = "Home Page";
 }
+
+<style>
+    /* Recent requests small header and wide cards aligned to the right */
+    .recent-requests-section h2 {
+        font-size: 1.05rem; /* smaller header */
+        margin-bottom: 6px;
+    }
+
+    .cards-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end; /* align cards to right */
+        gap: 12px;
+    }
+
+    .cards-grid .card {
+        flex: 0 0 520px; /* wide cards so content fits on single line where possible */
+        max-width: 520px;
+        min-width: 380px;
+    }
+
+    /* Prevent long labels from wrapping; truncate with ellipsis if too long */
+    .ride-card .card-text {
+            /* truncate on wide screens only */
+            overflow: hidden;
+            text-overflow: ellipsis;
+    }
+
+    .ride-card .card-body {
+        padding: 12px;
+    }
+
+                    @@media (min-width: 900px) {
+                    /* Pin recent requests to the right as a fixed column on large screens */
+                    .recent-requests-section {
+                        position: fixed;
+                        right: 16px;
+                        top: 100px;
+                        width: 520px;
+                        z-index: 1200;
+                        background: rgba(255,255,255,0.98);
+                        padding: 8px;
+                        border-radius: 6px;
+                        box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+                        /* Make the panel scrollable so long lists don't extend past the viewport */
+                        max-height: calc(100vh - 140px);
+                        overflow: auto;
+                    }
+
+                    /* Stack cards vertically inside the fixed column and ensure they size to the column */
+                    .cards-grid {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 12px;
+                        align-items: stretch;
+                    }
+
+                    .cards-grid .card {
+                        flex: none;
+                        width: 100%;
+                        max-width: 100%;
+                        min-width: 0;
+                    }
+
+                    /* ensure the pinned panel receives pointer events and sits above map layers */
+                    .recent-requests-section {
+                        pointer-events: auto;
+                        z-index: 99999; /* ensure it sits above any map overlays */
+                    }
+
+                    /* sticky container inside the scrollable panel so the button remains visible */
+                    .load-more-container {
+                        position: -webkit-sticky; /* Safari */
+                        position: sticky;
+                        bottom: 0;
+                        background: linear-gradient(rgba(255,255,255,0), rgba(255,255,255,0.98));
+                        padding: 8px 8px 8px 8px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        z-index: 100000;
+                        pointer-events: auto;
+                    }
+
+                    .load-more-container .btn {
+                        pointer-events: auto;
+                        z-index: 100001;
+                        display: block;
+                        width: calc(100% - 16px);
+                        max-width: 420px;
+                        background: #fff;
+                        border-radius: 6px;
+                        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+                        border: 1px solid rgba(0,0,0,0.06);
+                    }
+
+                    .ride-card .card-text {
+                        white-space: nowrap;
+                    }
+                }
+
+                    @@media (max-width: 899px) {
+                    /* Mobile: make the recent requests inline and full-width */
+                    .recent-requests-section { position: static; width: 100%; padding: 0; box-shadow: none; }
+                    .cards-grid { display:flex; flex-wrap: wrap; justify-content: flex-end; }
+                    .cards-grid .card { flex: 0 0 100%; max-width: 100%; }
+                    .ride-card .card-text { white-space: normal; }
+                }
+</style>
 
 @* Form to submit a RideRequest (POST) *@
 
@@ -27,25 +136,25 @@
                                                 <div style="margin:12px 0;">
                                                     <label>Pickup<br />
                                                         <input type="text" name="Pickup"
-                                                            value="@(Model?.Pickup ?? String.Empty)" />
+                                                            value="@(Model?.NewRequest?.Pickup ?? String.Empty)" />
                                                     </label>
                                                 </div>
                                                 <div style="margin:12px 0;">
                                                     <label>Dropoff<br />
                                                         <input type="text" name="Dropoff"
-                                                            value="@(Model?.Dropoff ?? String.Empty)" />
+                                                            value="@(Model?.NewRequest?.Dropoff ?? String.Empty)" />
                                                     </label>
                                                 </div>
                                                 <div style="margin:12px 0;">
                                                     <label>Date<br />
                                                         <input type="date" name="Date"
-                                                            value="@(Model?.Date?.ToString("yyyy-MM-dd") ?? String.Empty)" />
+                                                            value="@(Model?.NewRequest?.Date?.ToString("yyyy-MM-dd") ?? String.Empty)" />
                                                     </label>
                                                 </div>
                                                 <div style="margin:12px 0;">
                                                     <label>Time<br />
                                                         <input type="time" name="Time"
-                                                            value="@(Model?.Time?.ToString(@"hh\:mm") ?? String.Empty)" />
+                                                            value="@(Model?.NewRequest?.Time?.ToString(@"hh\:mm") ?? String.Empty)" />
                                                     </label>
                                                 </div>
                                                 <div style="margin:12px 0;">
@@ -105,13 +214,13 @@
                                                                                             role="combobox" tabindex="0"
                                                                                             data-testid="dotcom-ui.pickup-destination.input.pickup"
                                                                                             inputmode="text"
-                                                                                            asp-for="Pickup"
+                                                                                            asp-for="NewRequest.Pickup"
                                                                                             class="css-fsnQlw"
                                                                                             placeholder="Pickup location"
                                                                                             required />
                                                                                         <div class="css-EEyoV"></div>
                                                                                     </div>
-                                                                                    <span class="text-danger" asp-validation-for="Pickup"></span>
+                                                                                    <span class="text-danger" asp-validation-for="NewRequest.Pickup"></span>
 
                                                                                     <div data-testid="dotcom-ui.pickup-destination.placeholder.pickup"
                                                                                         class="css-jfDTkw"></div>
@@ -175,13 +284,13 @@
                                                                                             role="combobox" tabindex="0"
                                                                                             data-testid="dotcom-ui.pickup-destination.input.destination.drop0"
                                                                                             inputmode="text"
-                                                                                            asp-for="Dropoff"
+                                                                                            asp-for="NewRequest.Dropoff"
                                                                                             class="css-fsnQlw"
                                                                                             placeholder="Dropoff location"
                                                                                             required />
                                                                                         <div class="css-EEyoV"></div>
                                                                                     </div>
-                                                                                    <span class="text-danger" asp-validation-for="Dropoff"></span>
+                                                                                    <span class="text-danger" asp-validation-for="NewRequest.Dropoff"></span>
 
                                                                                     <div data-testid="dotcom-ui.pickup-destination.placeholder.destination.drop0"
                                                                                         class="css-jfDTkw"></div>
@@ -220,12 +329,12 @@
                                                                                 <input aria-label="Select a date."
                                                                                     aria-invalid="false"
                                                                                     autocomplete="on"
-                                                                                    asp-for="Date" type="date"
+                                                                                    asp-for="NewRequest.Date" type="date"
                                                                                     data-testid="dotcom-ui.date-picker.input"
                                                                                     class="css-eSRvYO"
                                                                                     aria-describedby="uid1" required />
                                                                             </div>
-                                                                            <span class="text-danger" asp-validation-for="Date"></span>
+                                                                            <span class="text-danger" asp-validation-for="NewRequest.Date"></span>
                                                                         </div>
                                                                     </div>
 
@@ -268,9 +377,9 @@
                                                                         <div class="css-ehJLpI">
                                                                             <div class="css-hQrlmS">
                                                                                 <div>
-                                                                                    <input asp-for="Time" type="time"
+                                                                                    <input asp-for="NewRequest.Time" type="time"
                                                                                         style="margin-left: 22px" />
-
+                                                                                    
                                                                                 </div>
 
 
@@ -355,12 +464,12 @@
                                                     </div> *@
                                                     <div style="margin:12px 0;">
                                                         <div style="margin:12px 0;" class="css-jmfNpg">
-                                                                <input asp-for="Name" type="text" class="css-fsnQlw" placeholder="Name" required />
-                                                                <span class="text-danger" asp-validation-for="Name"></span>
+                                                                <input asp-for="NewRequest.Name" type="text" class="css-fsnQlw" placeholder="Name" required />
+                                                                <span class="text-danger" asp-validation-for="NewRequest.Name"></span>
                                                             </div>
                                                             <div style="margin:12px 0;" class="css-jmfNpg">
-                                                                <input asp-for="Contact" type="text" class="css-fsnQlw" placeholder="Contact(number/FBMessengerLink)" required />
-                                                                <span class="text-danger" asp-validation-for="Contact"></span>
+                                                                <input asp-for="NewRequest.Contact" type="text" class="css-fsnQlw" placeholder="Contact(number/FBMessengerLink)" required />
+                                                                <span class="text-danger" asp-validation-for="NewRequest.Contact"></span>
                                                             </div>
 
 
@@ -373,16 +482,17 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        @if (ViewData["Submitted"] != null)
-                                        {
-                                            <div style="margin-top:12px;padding:8px;border:1px solid #ccc;">
-                                                <strong>Submitted:</strong>
-                                                <div>Pickup: @Model?.Pickup</div>
-                                                <div>Dropoff: @Model?.Dropoff</div>
-                                                <div>Date: @Model?.Date?.ToString("yyyy-MM-dd")</div>
-                                                <div>Time: @Model?.Time?.ToString(@"hh\:mm")</div>
-                                            </div>
-                                        }
+                                            @* Submission confirmation (shows last submitted values when present) *@
+                                            @if (ViewData["Submitted"] != null)
+                                            {
+                                                <div style="margin-top:12px;padding:8px;border:1px solid #ccc;">
+                                                    <strong>Submitted:</strong>
+                                                    <div>Pickup: @Model?.NewRequest?.Pickup</div>
+                                                    <div>Dropoff: @Model?.NewRequest?.Dropoff</div>
+                                                    <div>Date: @Model?.NewRequest?.Date?.ToString("yyyy-MM-dd")</div>
+                                                    <div>Time: @Model?.NewRequest?.Time?.ToString(@"hh\:mm")</div>
+                                                </div>
+                                            }
                                     </form>
 
 
@@ -390,318 +500,30 @@
                             </div>
 
 
-                            <div data-baseweb="block" data-testid="child-content-mobile-tablet" class="css-cLLIfi">
-                                <div class="css-cInfKi">
-                                    <div>
-                                        <div data-testid="cro-map-hero.ride.form-and-cta-container" class="css-bgjXJM">
-                                            <div class="css-eqICon">
-                                                <div class="css-UtXZf">
-                                                    <div data-baseweb="block" class="css-bunVky">
-                                                        <div style="position: relative;">
-                                                            <label class="css-dGWkvU">
-                                                            </label>
+                            
 
 
-                                                            <div>
-                                                                <div data-baseweb="select" data-testid="pudo-select-v2"
-                                                                    class="css-gpyJyz">
-                                                                    <div class="css-jmfNpg">
-                                                                        <div class="css-jrqkC">
-                                                                            <svg width="20" height="20"
-                                                                                viewBox="0 0 24 24" fill="none"
-                                                                                data-baseweb="icon">
-                                                                                <title>search</title>
-                                                                                <path fill-rule="evenodd"
-                                                                                    clip-rule="evenodd"
-                                                                                    d="M12 23c6.075 0 11-4.925 11-11S18.075 1 12 1 1 5.925 1 12s4.925 11 11 11Zm0-8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
-                                                                                    fill="currentColor"></path>
-                                                                            </svg>
-                                                                        </div>
-                                                                        <div data-tracking="disabled"
-                                                                            aria-label="pickup location input"
-                                                                            class="css-kImiCK">
-                                                                            <div class="css-kLKDje">
-                                                                                <input aria-autocomplete="list"
-                                                                                    aria-expanded="false"
-                                                                                    aria-haspopup="listbox"
-                                                                                    aria-label="Pickup location needs to be filled in"
-                                                                                    id="rv-pudo-select-0.fbiyr61gn57"
-                                                                                    role="combobox" tabindex="0"
-                                                                                    data-testid="dotcom-ui.pickup-destination.input.pickup"
-                                                                                    inputmode="text" name="Pickup"
-                                                                                    class="css-fsnQlw"
-                                                                                    placeholder="Pickup location"
-                                                                                    value="@(Model?.Pickup ?? String.Empty)">
-                                                                                <div class="css-EEyoV"></div>
-                                                                            </div>
-                                                                            <div data-testid="dotcom-ui.pickup-destination.placeholder.pickup"
-                                                                                class="css-jfDTkw"></div>
-                                                                        </div>
-
-
-                                                                        <div data-testid="clear-button"
-                                                                            class="css-cWhSmV css-jYsWkC">
-                                                                            <div class="css-cmdxYm">
-                                                                                <svg width="1em" height="1em"
-                                                                                    viewBox="0 0 24 24" fill="none"
-                                                                                    aria-label="Auto-fill my location"
-                                                                                    class="pe-location-fetch css-bOZeEP"
-                                                                                    role="button" tabindex="0">
-                                                                                    <path
-                                                                                        d="M10.5 13.5.5 11 21 3l-8 20.5-2.5-10Z"
-                                                                                        fill="currentColor"></path>
-                                                                                </svg>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div data-baseweb="block" class="css-ldbowJ">
-                                                        <div style="position: relative;">
-
-
-                                                            <div>
-                                                                <div data-baseweb="select" data-testid="pudo-select-v2"
-                                                                    class="css-gpyJyz">
-                                                                    <div class="css-jmfNpg">
-                                                                        <div class="css-jrqkC">
-                                                                            <svg width="20" height="20"
-                                                                                viewBox="0 0 24 24" fill="none"
-                                                                                data-baseweb="icon">
-                                                                                <title>search</title>
-                                                                                <path fill-rule="evenodd"
-                                                                                    clip-rule="evenodd"
-                                                                                    d="M22 2H2v20h20V2Zm-7 7H9v6h6V9Z"
-                                                                                    fill="currentColor"></path>
-                                                                            </svg>
-                                                                        </div>
-
-                                                                        <div data-tracking="disabled"
-                                                                            aria-label="destination location input"
-                                                                            class="css-kImiCK">
-                                                                            <div class="css-kLKDje">
-                                                                                <input aria-autocomplete="list"
-                                                                                    aria-expanded="false"
-                                                                                    aria-haspopup="listbox"
-                                                                                    aria-label="Dropoff location needs to be filled in"
-                                                                                    id="rv-pudo-select-0.klh5er112il"
-                                                                                    role="combobox" tabindex="0"
-                                                                                    data-testid="dotcom-ui.pickup-destination.input.destination.drop0"
-                                                                                    inputmode="text"
-                                                                                    placeholder="Dropoff location"
-                                                                                    class="css-fsnQlw" value=""
-                                                                                    aria-activedescendant="bui212val-0">
-                                                                                <div class="css-EEyoV"></div>
-                                                                            </div>
-
-                                                                            <div data-testid="dotcom-ui.pickup-destination.placeholder.destination.drop0"
-                                                                                class="css-jfDTkw"></div>
-                                                                        </div>
-
-                                                                        <div data-testid="clear-button"
-                                                                            class="css-cWhSmV css-jYsWkC"></div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-
-                                                    <div class="css-jkbjYp"></div>
-                                                </div>
-
-                                                @* Mobile: small form for Name & Contact inside mobile layout so users on phones can submit these fields too *@
-                                                <form method="post" class="css-mobile-contact-form" style="margin-top:8px;">
-                                                    @Html.AntiForgeryToken()
-                                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                                                    <div style="margin:8px 0;">
-                                                        <label style="display:block;">Name<br />
-                                                            <input asp-for="Name" class="css-fsnQlw" required />
-                                                            <span class="text-danger" asp-validation-for="Name"></span>
-                                                        </label>
-                                                    </div>
-                                                    <div style="margin:8px 0;">
-                                                        <label style="display:block;">Contact (FB messenger link / number)<br />
-                                                            <input asp-for="Contact" class="css-fsnQlw" required />
-                                                            <span class="text-danger" asp-validation-for="Contact"></span>
-                                                        </label>
-                                                    </div>
-                                                    <div style="margin:12px 0;">
-                                                        <button type="submit" class="css-cxqKro">Request ride</button>
-                                                    </div>
-                                                </form>
-                                                <div data-baseweb="block" class="css-cvpIEi css-ebzWAP"
-                                                    data-testid="dotcom-ui.data-time-picker-container.default">
-                                                    <div class="css-cYTjpz">
-                                                        <label for="trip-form-date-picker-0.0cgtes17ba5">
-                                                            <p data-baseweb="typo-paragraphsmall" class="css-hljex">Date
-                                                            </p>
-                                                        </label>
-                                                        <div class="css-Qbhli">
-                                                            <div class="css-cYTjpz">
-                                                                <div data-baseweb="input" class="css-hnpcQn">
-                                                                    <div data-baseweb="base-input" class="css-gKbRfz">
-                                                                        <input aria-label="Select a date."
-                                                                            aria-invalid="false" aria-required="false"
-                                                                            autocomplete="on"
-                                                                            id="trip-form-date-picker-0.0cgtes17ba5"
-                                                                            inputmode="none" name="" placeholder="Today"
-                                                                            type="text"
-                                                                            data-testid="dotcom-ui.date-picker.input"
-                                                                            class="css-eSRvYO" value=""
-                                                                            aria-describedby="uid2">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                            <p id="uid2"
-                                                                style="position: fixed; width: 0px; height: 0px; border-width: 0px; padding: 0px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(100%);">
-                                                                Press the down arrow key to interact with the calendar
-                                                                and select a date. Press the escape button to close the
-                                                                calendar.</p>
-                                                            <p aria-live="assertive"
-                                                                style="position: fixed; width: 0px; height: 0px; border-width: 0px; padding: 0px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(100%);">
-                                                            </p>
-
-                                                            <div class="css-fCLXtX">
-                                                                <svg width="1em" height="1em" viewBox="0 0 24 24"
-                                                                    fill="none" aria-hidden="true" color="#000000"
-                                                                    data-testid="calendar-filled">
-                                                                    <title>Calendar</title>
-                                                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                                                        d="M23 8V4h-3V1h-3v3H7V1H4v3H1v4h22Zm0 15H1V10h22v13ZM8 14H5v3h3v-3Z"
-                                                                        fill="currentColor"></path>
-                                                                </svg>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="css-cYTjpz">
-                                                        <label for="trip-form-time-picker-0.as2vkt8w25">
-                                                            <p data-baseweb="typo-paragraphsmall" class="css-hljex">Time
-                                                            </p>
-                                                        </label>
-
-                                                        <div class="css-Qbhli">
-                                                            <div data-baseweb="select"
-                                                                data-testid="dotcom-ui.time-picker" class="css-gpyJyz">
-                                                                <div class="css-ehJLpI">
-                                                                    <div class="css-hQrlmS">
-                                                                        <div aria-disabled="false"
-                                                                            aria-label="Select a time, 12-hour format."
-                                                                            tabindex="0" class="css-edlaNT"><input
-                                                                                aria-hidden="true" role="combobox"
-                                                                                id="trip-form-time-picker-0.as2vkt8w25"
-                                                                                tabindex="-1" inputmode="none"
-                                                                                style="opacity: 0; width: 0px; overflow: hidden; border: medium; padding: 0px;">
-                                                                        </div>
-                                                                        <div class="css-hwGGyM">Now</div>
-                                                                    </div>
-
-                                                                    <div class="css-jYsWkC">
-                                                                        <svg data-baseweb="icon" title="open"
-                                                                            viewBox="0 0 24 24" aria-hidden="true"
-                                                                            class="css-iMiALy">
-                                                                            <title>open</title>
-                                                                            <path
-                                                                                d="M12.7071 15.2929L17.1464 10.8536C17.4614 10.5386 17.2383 10 16.7929 10L7.20711 10C6.76165 10 6.53857 10.5386 6.85355 10.8536L11.2929 15.2929C11.6834 15.6834 12.3166 15.6834 12.7071 15.2929Z">
-                                                                            </path>
-                                                                        </svg>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="css-fCLXtX">
-                                                                <svg width="1em" height="1em" viewBox="0 0 24 24"
-                                                                    fill="none" aria-hidden="true" color="#000000"
-                                                                    data-testid="clock-filled">
-                                                                    <title>Clock</title>
-                                                                    <path
-                                                                        d="M12 1C5.9 1 1 5.9 1 12s4.9 11 11 11 11-4.9 11-11S18.1 1 12 1Zm6 13h-8V4h3v7h5v3Z"
-                                                                        fill="currentColor"></path>
-                                                                </svg>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div>
-                                                <p data-baseweb="typo-paragraphmedium" class="css-dTqljZ">Destination
-                                                    suggestions</p>
-                                                <div data-testid="RevealAnimationWrapper"
-                                                    style="height: auto; opacity: 1; overflow: hidden; transition: 1s;">
-                                                    <button aria-label="destination shortcut item"
-                                                        data-tracking="disabled"
-                                                        data-testid="dotcom-ui.location-suggestion" class="css-gQFwWm">
-                                                        <div class="css-jnYoLS">
-                                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                                                                <title>Clock</title>
-                                                                <path
-                                                                    d="M12 1C5.9 1 1 5.9 1 12s4.9 11 11 11 11-4.9 11-11S18.1 1 12 1Zm6 13h-8V4h3v7h5v3Z"
-                                                                    fill="currentColor"></path>
-                                                            </svg>
-                                                        </div>
-
-                                                        <div data-tracking="disabled"
-                                                            aria-label="destination shortcut item" class="css-dWzzPr">
-                                                            <div class="css-bZYltD">
-                                                                <p class="css-jYoXid">Dallas Fort Worth International
-                                                                    Airport (DFW)</p>
-                                                                <p class="css-eJDa-Df">2400 Aviation Dr, DFW Airport, TX
-                                                                </p>
-                                                            </div>
-                                                        </div>
-
-                                                    </button>
-
-                                                    <button aria-label="destination shortcut item"
-                                                        data-tracking="disabled"
-                                                        data-testid="dotcom-ui.location-suggestion" class="css-gQFwWm">
-                                                        <div class="css-jnYoLS">
-                                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                                                                <title>Clock</title>
-                                                                <path
-                                                                    d="M12 1C5.9 1 1 5.9 1 12s4.9 11 11 11 11-4.9 11-11S18.1 1 12 1Zm6 13h-8V4h3v7h5v3Z"
-                                                                    fill="currentColor"></path>
-                                                            </svg>
-                                                        </div>
-
-                                                        <div data-tracking="disabled"
-                                                            aria-label="destination shortcut item" class="css-dWzzPr">
-                                                            <div class="css-bZYltD">
-                                                                <p class="css-jYoXid">Dallas Love Field Airport (DAL)
-                                                                </p>
-                                                                <p class="css-eJDa-Df">8008 Herb Kelleher Way, Dallas,
-                                                                    TX</p>
-                                                            </div>
-                                                        </div>
-                                                    </button>
-                                                </div>
-                                            </div>
-
-                                            <div data-testid="content-group-dynamic" class="css-cYTjpz">
-                                                <div data-baseweb="block" class="css-PKJb">
-                                                    <div data-testid="cta-group-container" class="css-MloVC">
-                                                        <a data-baseweb="button" aria-label="See prices"
-                                                            data-bits-testid="dotcom-ui.cta-link.button.0"
-                                                            data-testid="button" href="https://m.uber.com/looking"
-                                                            text="See prices"
-                                                            data-tracking-name="ride_d43562af-8630-4652-b276-27c432114f77_RIDE.formCTAOne.ctaDetails_cta1"
-                                                            class="css-cxqKro">See pri</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                            <div class="recent-requests-section" style="margin:16px 0;">
+                                <h2 class="css-bIdYaZ">Recent ride requests</h2>
+                                <div class="cards-grid d-flex flex-wrap">
+                                    @if (Model?.RecentRequests != null && Model.RecentRequests.Any())
+                                    {
+                                        foreach (var req in Model.RecentRequests)
+                                        {
+                                            @await Html.PartialAsync("_RideRequestCard", req)
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <div>No recent requests to show.</div>
+                                    }
                                 </div>
+
+                                @{ var next = (Model?.Skip ?? 0) + (Model?.Take ?? 11); }
+                                <div id="load-more-sentinel" data-skip="@(next)" data-take="@(Model?.Take ?? 11)" style="margin-top:12px; display:flex; justify-content:center; align-items:center; min-height:32px;"></div>
                             </div>
 
-
-                            <div data-baseweb="block" class="css-hHlspe"
+                            @* <div data-baseweb="block" class="css-hHlspe"
                                 data-uweb-guide-key="MAP_HERO_SIDE_MEDIA_WRAPPER">
                                 <div data-baseweb="block" class="css-PKJb">
                                     <div data-baseweb="aspect-ratio-box" class="css-eENBEE">
@@ -814,7 +636,7 @@
 
                                     </div>
                                 </div>
-                            </div>
+                            </div> *@
                         </div>
                     </div>
                 </div>
@@ -822,3 +644,140 @@
         </div>
     </section>
 </div>
+
+<script>
+    // Mobile form: copy desktop values into hidden fields before submit so mobile form submits the full NewRequest
+    (function(){
+        const form = document.getElementById('mobile-contact-form');
+        if (!form) return;
+
+        function ensureHiddenInput(name, value){
+            let input = form.querySelector('input[name="' + name + '"]');
+            if (!input){
+                input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = name;
+                form.appendChild(input);
+            }
+            input.value = value ?? '';
+        }
+
+        form.addEventListener('submit', function(e){
+            // copy values from page inputs (try several selectors)
+            const mapName = {
+                'NewRequest.Pickup': ['input[name="NewRequest.Pickup"]','input[name="Pickup"]','input[id$="Pickup"]'],
+                'NewRequest.Dropoff': ['input[name="NewRequest.Dropoff"]','input[name="Dropoff"]','input[id$="Dropoff"]'],
+                'NewRequest.Date': ['input[name="NewRequest.Date"]','input[name="Date"]','input[id$="Date"]'],
+                'NewRequest.Time': ['input[name="NewRequest.Time"]','input[name="Time"]','input[id$="Time"]']
+            };
+
+            for (const key of Object.keys(mapName)){
+                const selectors = mapName[key];
+                let val = '';
+                for (const sel of selectors){
+                    const el = document.querySelector(sel);
+                    if (el && el.value !== undefined){ val = el.value; break; }
+                }
+                ensureHiddenInput(key, val);
+            }
+
+            // allow submit to continue
+        });
+    })();
+
+    // Infinite scroll implementation (IntersectionObserver)
+    (function(){
+        console.debug('Infinite scroll initializing');
+        let loading = false;
+        const container = document.querySelector('.cards-grid');
+        const panel = document.querySelector('.recent-requests-section'); // scroll root for observer
+        const sentinel = document.getElementById('load-more-sentinel');
+
+        function showSpinner() {
+            if (!sentinel) return;
+            // avoid creating multiple spinners
+            if (sentinel._spinner) return;
+            const sp = document.createElement('div');
+            sp.setAttribute('aria-hidden','true');
+            // spinner visual styles
+            Object.assign(sp.style, {
+                width: '20px',
+                height: '20px',
+                border: '3px solid #ddd',
+                borderTopColor: '#333',
+                borderRadius: '50%',
+                boxSizing: 'border-box',
+                display: 'inline-block'
+            });
+            sentinel.appendChild(sp);
+            // animate with requestAnimationFrame to avoid needing the keyframes CSS rule
+            let angle = 0;
+            function raf() {
+                angle = (angle + 8) % 360;
+                sp.style.transform = 'rotate(' + angle + 'deg)';
+                sentinel._spinRAF = requestAnimationFrame(raf);
+            }
+            sentinel._spinner = sp;
+            sentinel._spinRAF = requestAnimationFrame(raf);
+        }
+        function hideSpinner() {
+            if (!sentinel) return;
+            if (sentinel._spinRAF) { cancelAnimationFrame(sentinel._spinRAF); sentinel._spinRAF = null; }
+            if (sentinel._spinner) { sentinel._spinner.remove(); sentinel._spinner = null; }
+        }
+
+        async function loadNext() {
+            if (loading || !sentinel) return;
+            loading = true;
+            const skip = parseInt(sentinel.getAttribute('data-skip') || '0', 10);
+            const take = parseInt(sentinel.getAttribute('data-take') || '11', 10);
+            const url = '/Home/LoadMore?skip=' + skip + '&take=' + take;
+            try{
+                showSpinner();
+                console.debug('Fetching', url);
+                const resp = await fetch(url, { credentials: 'same-origin' });
+                console.debug('Fetch response', resp.status, resp.ok);
+                if (!resp.ok) throw new Error('Network response not ok');
+                const html = await resp.text();
+                if (!container) throw new Error('cards-grid container missing');
+
+                if (html.trim().length === 0){
+                    // no more items — disconnect observer
+                    if (sentinel._observer) sentinel._observer.disconnect();
+                    sentinel.style.display = 'none';
+                } else {
+                    const temp = document.createElement('div');
+                    temp.innerHTML = html;
+                    while (temp.firstChild){ container.appendChild(temp.firstChild); }
+                    // update skip for next load
+                    const next = skip + take;
+                    sentinel.setAttribute('data-skip', next.toString());
+                }
+            }catch(err){
+                console.error('Infinite load failed', err);
+            } finally {
+                hideSpinner();
+                loading = false;
+            }
+        }
+
+        if (sentinel && 'IntersectionObserver' in window){
+            try{
+                const observer = new IntersectionObserver(entries => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting){
+                            loadNext();
+                        }
+                    });
+                }, {
+                    root: panel || null,
+                    rootMargin: '200px',
+                    threshold: 0.1
+                });
+                observer.observe(sentinel);
+                sentinel._observer = observer;
+            }catch(e){ console.debug('IntersectionObserver failed to initialize', e); }
+        }
+        // spinner is animated via requestAnimationFrame; no injected CSS needed
+    })();
+</script>

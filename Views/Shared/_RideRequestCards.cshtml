@@ -1,0 +1,6 @@
+@model IEnumerable<gurujiRide.Models.RideRequest>
+
+@foreach (var req in Model)
+{
+    @await Html.PartialAsync("_RideRequestCard", req)
+}
