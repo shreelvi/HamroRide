@@ -6,110 +6,134 @@
 <style>
     /* Recent requests small header and wide cards aligned to the right */
     .recent-requests-section h2 {
-        font-size: 1.05rem; /* smaller header */
+        font-size: 1.05rem;
+        /* smaller header */
         margin-bottom: 6px;
     }
 
     .cards-grid {
         display: flex;
         flex-wrap: wrap;
-        justify-content: flex-end; /* align cards to right */
+        justify-content: flex-end;
+        /* align cards to right */
         gap: 12px;
     }
 
     .cards-grid .card {
-        flex: 0 0 520px; /* wide cards so content fits on single line where possible */
+        flex: 0 0 520px;
+        /* wide cards so content fits on single line where possible */
         max-width: 520px;
         min-width: 380px;
     }
 
     /* Prevent long labels from wrapping; truncate with ellipsis if too long */
     .ride-card .card-text {
-            /* truncate on wide screens only */
-            overflow: hidden;
-            text-overflow: ellipsis;
+        /* truncate on wide screens only */
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .ride-card .card-body {
         padding: 12px;
     }
 
-                    @@media (min-width: 900px) {
-                    /* Pin recent requests to the right as a fixed column on large screens */
-                    .recent-requests-section {
-                        position: fixed;
-                        right: 16px;
-                        top: 100px;
-                        width: 520px;
-                        z-index: 1200;
-                        background: rgba(255,255,255,0.98);
-                        padding: 8px;
-                        border-radius: 6px;
-                        box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-                        /* Make the panel scrollable so long lists don't extend past the viewport */
-                        max-height: calc(100vh - 140px);
-                        overflow: auto;
-                    }
+    @@media (min-width: 900px) {
 
-                    /* Stack cards vertically inside the fixed column and ensure they size to the column */
-                    .cards-grid {
-                        display: flex;
-                        flex-direction: column;
-                        gap: 12px;
-                        align-items: stretch;
-                    }
+        /* Pin recent requests to the right as a fixed column on large screens */
+        .recent-requests-section {
+            position: fixed;
+            right: 16px;
+            top: 100px;
+            width: 520px;
+            z-index: 1200;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 8px;
+            border-radius: 6px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+            /* Make the panel scrollable so long lists don't extend past the viewport */
+            max-height: calc(100vh - 140px);
+            overflow: auto;
+        }
 
-                    .cards-grid .card {
-                        flex: none;
-                        width: 100%;
-                        max-width: 100%;
-                        min-width: 0;
-                    }
+        /* Stack cards vertically inside the fixed column and ensure they size to the column */
+        .cards-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: stretch;
+        }
 
-                    /* ensure the pinned panel receives pointer events and sits above map layers */
-                    .recent-requests-section {
-                        pointer-events: auto;
-                        z-index: 99999; /* ensure it sits above any map overlays */
-                    }
+        .cards-grid .card {
+            flex: none;
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+        }
 
-                    /* sticky container inside the scrollable panel so the button remains visible */
-                    .load-more-container {
-                        position: -webkit-sticky; /* Safari */
-                        position: sticky;
-                        bottom: 0;
-                        background: linear-gradient(rgba(255,255,255,0), rgba(255,255,255,0.98));
-                        padding: 8px 8px 8px 8px;
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        z-index: 100000;
-                        pointer-events: auto;
-                    }
+        /* ensure the pinned panel receives pointer events and sits above map layers */
+        .recent-requests-section {
+            pointer-events: auto;
+            z-index: 99999;
+            /* ensure it sits above any map overlays */
+        }
 
-                    .load-more-container .btn {
-                        pointer-events: auto;
-                        z-index: 100001;
-                        display: block;
-                        width: calc(100% - 16px);
-                        max-width: 420px;
-                        background: #fff;
-                        border-radius: 6px;
-                        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-                        border: 1px solid rgba(0,0,0,0.06);
-                    }
+        /* sticky container inside the scrollable panel so the button remains visible */
+        .load-more-container {
+            position: -webkit-sticky;
+            /* Safari */
+            position: sticky;
+            bottom: 0;
+            background: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.98));
+            padding: 8px 8px 8px 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100000;
+            pointer-events: auto;
+        }
 
-                    .ride-card .card-text {
-                        white-space: nowrap;
-                    }
-                }
+        .load-more-container .btn {
+            pointer-events: auto;
+            z-index: 100001;
+            display: block;
+            width: calc(100% - 16px);
+            max-width: 420px;
+            background: #fff;
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+        }
 
-                    @@media (max-width: 899px) {
-                    /* Mobile: make the recent requests inline and full-width */
-                    .recent-requests-section { position: static; width: 100%; padding: 0; box-shadow: none; }
-                    .cards-grid { display:flex; flex-wrap: wrap; justify-content: flex-end; }
-                    .cards-grid .card { flex: 0 0 100%; max-width: 100%; }
-                    .ride-card .card-text { white-space: normal; }
-                }
+        .ride-card .card-text {
+            white-space: nowrap;
+        }
+    }
+
+    @@media (max-width: 899px) {
+
+        /* Mobile: make the recent requests inline and full-width */
+        .recent-requests-section {
+            position: static;
+            width: 100%;
+            padding: 0;
+            box-shadow: none;
+        }
+
+        .cards-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .cards-grid .card {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+
+        .ride-card .card-text {
+            white-space: normal;
+        }
+    }
 </style>
 
 @* Form to submit a RideRequest (POST) *@
@@ -220,7 +244,8 @@
                                                                                             required />
                                                                                         <div class="css-EEyoV"></div>
                                                                                     </div>
-                                                                                    <span class="text-danger" asp-validation-for="NewRequest.Pickup"></span>
+                                                                                    <span class="text-danger"
+                                                                                        asp-validation-for="NewRequest.Pickup"></span>
 
                                                                                     <div data-testid="dotcom-ui.pickup-destination.placeholder.pickup"
                                                                                         class="css-jfDTkw"></div>
@@ -290,7 +315,8 @@
                                                                                             required />
                                                                                         <div class="css-EEyoV"></div>
                                                                                     </div>
-                                                                                    <span class="text-danger" asp-validation-for="NewRequest.Dropoff"></span>
+                                                                                    <span class="text-danger"
+                                                                                        asp-validation-for="NewRequest.Dropoff"></span>
 
                                                                                     <div data-testid="dotcom-ui.pickup-destination.placeholder.destination.drop0"
                                                                                         class="css-jfDTkw"></div>
@@ -329,12 +355,14 @@
                                                                                 <input aria-label="Select a date."
                                                                                     aria-invalid="false"
                                                                                     autocomplete="on"
-                                                                                    asp-for="NewRequest.Date" type="date"
+                                                                                    asp-for="NewRequest.Date"
+                                                                                    type="date"
                                                                                     data-testid="dotcom-ui.date-picker.input"
                                                                                     class="css-eSRvYO"
-                                                                                    aria-describedby="uid1" required />
+                                                                                    aria-describedby="uid1" />
                                                                             </div>
-                                                                            <span class="text-danger" asp-validation-for="NewRequest.Date"></span>
+                                                                            <span class="text-danger"
+                                                                                asp-validation-for="NewRequest.Date"></span>
                                                                         </div>
                                                                     </div>
 
@@ -377,9 +405,10 @@
                                                                         <div class="css-ehJLpI">
                                                                             <div class="css-hQrlmS">
                                                                                 <div>
-                                                                                    <input asp-for="NewRequest.Time" type="time"
+                                                                                    <input asp-for="NewRequest.Time"
+                                                                                        type="time"
                                                                                         style="margin-left: 22px" />
-                                                                                    
+
                                                                                 </div>
 
 
@@ -464,13 +493,19 @@
                                                     </div> *@
                                                     <div style="margin:12px 0;">
                                                         <div style="margin:12px 0;" class="css-jmfNpg">
-                                                                <input asp-for="NewRequest.Name" type="text" class="css-fsnQlw" placeholder="Name" required />
-                                                                <span class="text-danger" asp-validation-for="NewRequest.Name"></span>
-                                                            </div>
-                                                            <div style="margin:12px 0;" class="css-jmfNpg">
-                                                                <input asp-for="NewRequest.Contact" type="text" class="css-fsnQlw" placeholder="Contact(number/FBMessengerLink)" required />
-                                                                <span class="text-danger" asp-validation-for="NewRequest.Contact"></span>
-                                                            </div>
+                                                            <input asp-for="NewRequest.Name" type="text"
+                                                                class="css-fsnQlw" placeholder="Name" required />
+                                                            <span class="text-danger"
+                                                                asp-validation-for="NewRequest.Name"></span>
+                                                        </div>
+                                                        <div style="margin:12px 0;" class="css-jmfNpg">
+                                                            <input asp-for="NewRequest.Contact" type="text"
+                                                                class="css-fsnQlw"
+                                                                placeholder="Contact(number/FBMessengerLink)"
+                                                                required />
+                                                            <span class="text-danger"
+                                                                asp-validation-for="NewRequest.Contact"></span>
+                                                        </div>
 
 
 
@@ -482,17 +517,17 @@
                                                 </div>
                                             </div>
                                         </div>
-                                            @* Submission confirmation (shows last submitted values when present) *@
+                                        @* Submission confirmation (shows last submitted values when present) *@
                                             @if (ViewData["Submitted"] != null)
-                                            {
-                                                <div style="margin-top:12px;padding:8px;border:1px solid #ccc;">
-                                                    <strong>Submitted:</strong>
-                                                    <div>Pickup: @Model?.NewRequest?.Pickup</div>
-                                                    <div>Dropoff: @Model?.NewRequest?.Dropoff</div>
-                                                    <div>Date: @Model?.NewRequest?.Date?.ToString("yyyy-MM-dd")</div>
-                                                    <div>Time: @Model?.NewRequest?.Time?.ToString(@"hh\:mm")</div>
-                                                </div>
-                                            }
+                                        {
+                                            <div style="margin-top:12px;padding:8px;border:1px solid #ccc;">
+                                                <strong>Submitted:</strong>
+                                                <div>Pickup: @Model?.NewRequest?.Pickup</div>
+                                                <div>Dropoff: @Model?.NewRequest?.Dropoff</div>
+                                                <div>Date: @Model?.NewRequest?.Date?.ToString("yyyy-MM-dd")</div>
+                                                <div>Time: @Model?.NewRequest?.Time?.ToString(@"hh\:mm")</div>
+                                            </div>
+                                        }
                                     </form>
 
 
@@ -500,7 +535,7 @@
                             </div>
 
 
-                            
+
 
 
                             <div class="recent-requests-section" style="margin:16px 0;">
@@ -519,8 +554,12 @@
                                     }
                                 </div>
 
-                                @{ var next = (Model?.Skip ?? 0) + (Model?.Take ?? 11); }
-                                <div id="load-more-sentinel" data-skip="@(next)" data-take="@(Model?.Take ?? 11)" style="margin-top:12px; display:flex; justify-content:center; align-items:center; min-height:32px;"></div>
+                                @{
+                                    var next = (Model?.Skip ?? 0) + (Model?.Take ?? 11);
+                                }
+                                <div id="load-more-sentinel" data-skip="@(next)" data-take="@(Model?.Take ?? 11)"
+                                    style="margin-top:12px; display:flex; justify-content:center; align-items:center; min-height:32px;">
+                                </div>
                             </div>
 
                             @* <div data-baseweb="block" class="css-hHlspe"
@@ -638,6 +677,44 @@
                                 </div>
                             </div> *@
                         </div>
+
+                        <div class="css-dryfNa">
+                            <h3 class="css-gATgry">Benefits</h3>
+                            <ul class="css-cAzctG">
+                                <li aria-label="Choose your exact pickup time up to 90 days in advance."
+                                    class="css-elXnqf">
+                                    <div class="css-jnYoLS"><img alt=""
+                                            src="https://tb-static.uber.com/prod/udam-assets/e12eddee-f082-49f7-a5fc-22c17977de50.svg"
+                                            class="css-hmxZjQ"></div>
+                                    <div class="css-dWzzPr">
+                                        <div class="css-bZYltD">
+                                            <p class="css-ivMWY">Driving somewhere and want to lyft someone and earn money?
+                                            </p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li aria-label="Extra wait time included to meet your ride." class="css-elXnqf">
+                                    <div class="css-jnYoLS"><img alt=""
+                                            src="https://tb-static.uber.com/prod/udam-assets/30f5ecd4-8ccf-44d0-9976-2833f69df8a9.svg"
+                                            class="css-hmxZjQ"></div>
+                                    <div class="css-dWzzPr">
+                                        <div class="css-bZYltD">
+                                            <p class="css-ivMWY">Easily sort and filter through requested rides and find a passenger going your way</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                @* <li aria-label="Cancel at no charge up to 60 minutes in advance." class="css-elXnqf">
+                                    <div class="css-jnYoLS"><img alt=""
+                                            src="https://tb-static.uber.com/prod/udam-assets/45ebda59-6a0d-41e3-a924-0dbbce078029.svg"
+                                            class="css-hmxZjQ"></div>
+                                    <div class="css-iKqlwj">
+                                        <div class="css-bZYltD">
+                                            <p class="css-ivMWY"></p>
+                                        </div>
+                                    </div>
+                                </li> *@
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -647,13 +724,13 @@
 
 <script>
     // Mobile form: copy desktop values into hidden fields before submit so mobile form submits the full NewRequest
-    (function(){
+    (function () {
         const form = document.getElementById('mobile-contact-form');
         if (!form) return;
 
-        function ensureHiddenInput(name, value){
+        function ensureHiddenInput(name, value) {
             let input = form.querySelector('input[name="' + name + '"]');
-            if (!input){
+            if (!input) {
                 input = document.createElement('input');
                 input.type = 'hidden';
                 input.name = name;
@@ -662,21 +739,21 @@
             input.value = value ?? '';
         }
 
-        form.addEventListener('submit', function(e){
+        form.addEventListener('submit', function (e) {
             // copy values from page inputs (try several selectors)
             const mapName = {
-                'NewRequest.Pickup': ['input[name="NewRequest.Pickup"]','input[name="Pickup"]','input[id$="Pickup"]'],
-                'NewRequest.Dropoff': ['input[name="NewRequest.Dropoff"]','input[name="Dropoff"]','input[id$="Dropoff"]'],
-                'NewRequest.Date': ['input[name="NewRequest.Date"]','input[name="Date"]','input[id$="Date"]'],
-                'NewRequest.Time': ['input[name="NewRequest.Time"]','input[name="Time"]','input[id$="Time"]']
+                'NewRequest.Pickup': ['input[name="NewRequest.Pickup"]', 'input[name="Pickup"]', 'input[id$="Pickup"]'],
+                'NewRequest.Dropoff': ['input[name="NewRequest.Dropoff"]', 'input[name="Dropoff"]', 'input[id$="Dropoff"]'],
+                'NewRequest.Date': ['input[name="NewRequest.Date"]', 'input[name="Date"]', 'input[id$="Date"]'],
+                'NewRequest.Time': ['input[name="NewRequest.Time"]', 'input[name="Time"]', 'input[id$="Time"]']
             };
 
-            for (const key of Object.keys(mapName)){
+            for (const key of Object.keys(mapName)) {
                 const selectors = mapName[key];
                 let val = '';
-                for (const sel of selectors){
+                for (const sel of selectors) {
                     const el = document.querySelector(sel);
-                    if (el && el.value !== undefined){ val = el.value; break; }
+                    if (el && el.value !== undefined) { val = el.value; break; }
                 }
                 ensureHiddenInput(key, val);
             }
@@ -686,7 +763,7 @@
     })();
 
     // Infinite scroll implementation (IntersectionObserver)
-    (function(){
+    (function () {
         console.debug('Infinite scroll initializing');
         let loading = false;
         const container = document.querySelector('.cards-grid');
@@ -698,7 +775,7 @@
             // avoid creating multiple spinners
             if (sentinel._spinner) return;
             const sp = document.createElement('div');
-            sp.setAttribute('aria-hidden','true');
+            sp.setAttribute('aria-hidden', 'true');
             // spinner visual styles
             Object.assign(sp.style, {
                 width: '20px',
@@ -732,7 +809,7 @@
             const skip = parseInt(sentinel.getAttribute('data-skip') || '0', 10);
             const take = parseInt(sentinel.getAttribute('data-take') || '11', 10);
             const url = '/Home/LoadMore?skip=' + skip + '&take=' + take;
-            try{
+            try {
                 showSpinner();
                 console.debug('Fetching', url);
                 const resp = await fetch(url, { credentials: 'same-origin' });
@@ -741,19 +818,19 @@
                 const html = await resp.text();
                 if (!container) throw new Error('cards-grid container missing');
 
-                if (html.trim().length === 0){
+                if (html.trim().length === 0) {
                     // no more items — disconnect observer
                     if (sentinel._observer) sentinel._observer.disconnect();
                     sentinel.style.display = 'none';
                 } else {
                     const temp = document.createElement('div');
                     temp.innerHTML = html;
-                    while (temp.firstChild){ container.appendChild(temp.firstChild); }
+                    while (temp.firstChild) { container.appendChild(temp.firstChild); }
                     // update skip for next load
                     const next = skip + take;
                     sentinel.setAttribute('data-skip', next.toString());
                 }
-            }catch(err){
+            } catch (err) {
                 console.error('Infinite load failed', err);
             } finally {
                 hideSpinner();
@@ -761,11 +838,11 @@
             }
         }
 
-        if (sentinel && 'IntersectionObserver' in window){
-            try{
+        if (sentinel && 'IntersectionObserver' in window) {
+            try {
                 const observer = new IntersectionObserver(entries => {
                     entries.forEach(entry => {
-                        if (entry.isIntersecting){
+                        if (entry.isIntersecting) {
                             loadNext();
                         }
                     });
@@ -776,7 +853,7 @@
                 });
                 observer.observe(sentinel);
                 sentinel._observer = observer;
-            }catch(e){ console.debug('IntersectionObserver failed to initialize', e); }
+            } catch (e) { console.debug('IntersectionObserver failed to initialize', e); }
         }
         // spinner is animated via requestAnimationFrame; no injected CSS needed
     })();

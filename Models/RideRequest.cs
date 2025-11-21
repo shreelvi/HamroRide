@@ -22,7 +22,6 @@ namespace gurujiRide.Models
     [StringLength(200)]
     public string? Contact { get; set; }
         // Date (date part) - bound from <input type="date">
-        [Required]
         public DateTime? Date { get; set; }
         // Time (time of day) - bound from <input type="time">
         public TimeSpan? Time { get; set; }

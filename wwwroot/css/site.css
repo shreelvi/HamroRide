@@ -1251,7 +1251,7 @@ main:has(input[type="checkbox"]#hamburger-input:not(:checked)) .ssr-drawer-wrapp
     border-bottom-width: 0;
     border-bottom-style: solid;
     border-bottom-color: #F3F3F3;
-    background-color: #000000;
+    background-color: blueviolet;
     box-sizing: border-box;
     height: 64px;
     padding-left: 0;
@@ -8477,6 +8477,7 @@ label {
 }
 
 .css-dryfNa {
+    width: max-content;
     border-color: rgba(0, 0, 0, 0.04);
     border-style: solid;
     border-width: 1px;
