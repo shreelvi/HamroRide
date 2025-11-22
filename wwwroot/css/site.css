@@ -772,12 +772,10 @@ main:has(input[type="checkbox"]#hamburger-input:not(:checked)) .ssr-drawer-wrapp
 }
 
 /* Navbar overrides appended safely at EOF */
-.navbar {
+.site-navbar {
     background-color: #276EF1 !important; /* violet-blue */
 }
-.navbar .css-lWgfA,
-.navbar .css-iJiqqk > a.css-lWgfA,
-.navbar .nav-link.css-lWgfA {
+.site-navbar .nav-link {
     color: #ffffff !important;
     background-color: transparent !important;
     box-shadow: none !important;
@@ -785,8 +783,7 @@ main:has(input[type="checkbox"]#hamburger-input:not(:checked)) .ssr-drawer-wrapp
     padding: 0.375rem 0.75rem !important;
     font-weight: 500;
 }
-.navbar .nav-item .btn.css-bJdzmm,
-.navbar .nav-item .btn.css-evYoZq {
+.site-navbar .nav-item .btn {
     background-color: rgba(255,255,255,0.12) !important;
     color: #fff !important;
     box-shadow: none !important;
@@ -794,13 +791,12 @@ main:has(input[type="checkbox"]#hamburger-input:not(:checked)) .ssr-drawer-wrapp
     border-radius: 4px !important;
     padding: 0.35rem 0.7rem !important;
 }
-.navbar .navbar-brand.css-bLZDAV {
+.site-navbar .navbar-brand {
     color: #fff !important;
 }
 
-/* Ensure the Bootstrap navbar toggler is visible on small screens and has a white hamburger icon
-   This is a scoped fallback in case other CSS overrides hid or removed the default icon. */
-.navbar-toggler {
+/* Ensure the Bootstrap navbar toggler is visible on small screens and uses the inline SVG fallback when needed */
+.site-navbar .navbar-toggler {
     display: inline-flex !important;
     align-items: center;
     justify-content: center;
@@ -808,30 +804,22 @@ main:has(input[type="checkbox"]#hamburger-input:not(:checked)) .ssr-drawer-wrapp
     padding: 0.25rem 0.5rem;
     margin-left: 0.5rem;
 }
-.navbar-toggler:focus {
+.site-navbar .navbar-toggler:focus {
     outline: none;
     box-shadow: 0 0 0 0.15rem rgba(255,255,255,0.12);
 }
-.navbar-toggler-icon {
-    display: inline-block;
-    width: 22px;
-    height: 16px;
-    background-image: linear-gradient(#fff, #fff), linear-gradient(#fff, #fff), linear-gradient(#fff, #fff);
-    background-position: center 0px, center 7px, center 14px;
-    background-size: 100% 2px;
-    background-repeat: no-repeat;
+.site-navbar .navbar-toggler-svg line {
+    stroke: #ff8c00; /* orange accent */
 }
 
 @media (min-width: 768px) {
     /* on larger screens Bootstrap shows full menu; ensure toggler doesn't appear */
-    .navbar-toggler { display: none !important; }
+    .site-navbar .navbar-toggler { display: none !important; }
 }
 
-/* Force toggler to be visible and above other header elements on small screens.
-   Some generated classes previously caused brand or other elements to expand and cover it.
-   This rule positions the toggler on the right and gives it a high z-index. */
+/* Force toggler to be visible and above other header elements on small screens. */
 @media (max-width: 767.98px) {
-    .navbar .navbar-toggler {
+    .site-navbar .navbar-toggler {
         display: inline-flex !important;
         position: absolute !important;
         right: 12px !important;
@@ -842,11 +830,11 @@ main:has(input[type="checkbox"]#hamburger-input:not(:checked)) .ssr-drawer-wrapp
         visibility: visible !important;
         opacity: 1 !important;
         border: none !important;
-        background-color: rgba(255,140,0,0.18) !important; /* orange-tint background */
+        background-color: rgba(255,140,0,0.12) !important; /* subtle orange-tint background */
         padding: 8px !important;
     }
     /* Make sure the brand doesn't cover the toggler */
-    .navbar .navbar-brand {
+    .site-navbar .navbar-brand {
         margin-right: 56px !important; /* leave space for toggler */
     }
 }
@@ -8657,7 +8645,7 @@ label {
 
 /* Ensure the collapsed navbar panel is visible and readable on small screens */
 @media (max-width: 767.98px) {
-    .navbar .navbar-collapse {
+    .site-navbar .navbar-collapse {
         /* match header background so expanded menu items are visible */
         background-color: #276EF1 !important;
         position: absolute !important;
@@ -8671,39 +8659,37 @@ label {
         display: none !important;
         box-shadow: 0 8px 24px rgba(0,0,0,0.12) !important;
     }
-    .navbar .navbar-collapse.show,
-    .navbar .navbar-collapse.collapse.show {
+    .site-navbar .navbar-collapse.show,
+    .site-navbar .navbar-collapse.collapse.show {
         display: block !important;
     }
-    .navbar .navbar-collapse .nav-link,
-    .navbar .navbar-collapse .css-lWgfA {
+    .site-navbar .navbar-collapse .nav-link {
         color: #ffffff !important;
         background-color: transparent !important;
         padding: 0.65rem 0.25rem !important;
         display: block !important;
         border-bottom: 1px solid rgba(255,255,255,0.06) !important;
     }
-    .navbar .navbar-collapse .css-e0LFUs {
+    .site-navbar .navbar-collapse .navbar-nav.ms-auto {
         display: block !important;
         margin-top: 0.5rem !important;
         padding-top: 0.5rem !important;
     }
-    .navbar .navbar-collapse .css-e0LFUs .btn.css-bJdzmm,
-    .navbar .navbar-collapse .css-e0LFUs .btn.css-evYoZq {
+    .site-navbar .navbar-collapse .navbar-nav.ms-auto .btn {
         background-color: rgba(255,255,255,0.12) !important;
         color: #fff !important;
         display: inline-block !important;
         margin-right: 0.5rem !important;
     }
     /* Make the main nav list stack cleanly and be scrollable if long */
-    .navbar .css-ceakVg {
+    .site-navbar .navbar-collapse .navbar-nav {
         display: block !important;
         margin: 0 !important;
         padding: 0 !important;
         overflow: auto !important;
         max-height: calc(100vh - 120px) !important;
     }
-    .navbar .css-ceakVg li {
+    .site-navbar .navbar-collapse .navbar-nav li {
         margin: 0 !important;
     }
 }
