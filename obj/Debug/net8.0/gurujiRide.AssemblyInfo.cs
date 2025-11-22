@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("gurujiRide")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6bede0eb13c006d714a35a9f9d03fc34de9394e2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9ebe9f8849a24c8d3f53be43b3ce0069cda3df24")]
 [assembly: System.Reflection.AssemblyProductAttribute("gurujiRide")]
 [assembly: System.Reflection.AssemblyTitleAttribute("gurujiRide")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

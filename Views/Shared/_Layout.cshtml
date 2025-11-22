@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - gurujiRide</title>
+    <title>@ViewData["Title"] - AnantDFW</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/gurujiRide.styles.css" asp-append-version="true" />
@@ -29,21 +29,32 @@
                 </div>
             </div>
         </nav> *@
-        <nav role="navigation" class="css-EuaFB">
-            <div class="css-jpTJNR"><div class="css-hWkSKL" tabindex="-1">
-            <a data-baseweb="link" href="/home/index" target="_self" class="css-bLZDAV">Anant</a>
-                <ul class="css-ceakVg">
-                    <li class="css-iJiqqk"><a data-baseweb="button" href="/home/index" target="_self" label="Ride" class="css-lWgfA">Ride</a></li>
-                    <li class="css-iJiqqk"><a data-baseweb="button" href="/home/lyft" target="_self" label="Ride" class="css-lWgfA">Lyft</a></li>
-                    <li class="css-iJiqqk"><a data-baseweb="button" aria-label="Earn" href="/home/room" target="_self" label="" class="css-lWgfA">Room</a></li>
-                </ul>
-                <ul class="css-e0LFUs">
-                    <li class="css-iJiqqk"><a data-baseweb="button" aria-label="Help" href="https://help.uber.com/" target="_self" class="btn disabled css-lWgfA">Help</a></li>
-                    <li class="css-iJiqqk"><a data-baseweb="button" aria-label="Log in to your Uber account" href="https://m.uber.com/looking" target="_self" class="btn disabled css-bJdzmm" disabled>Log in</a></li>
-                    <li class="css-dmqvLf"><a data-baseweb="button" aria-label="Sign up to ride, drive, and get delivery" href="https://m.uber.com/looking" target="_self" class="btn disabled css-evYoZq" disabled>Sign up</a></li>
-                </ul> 
+        <nav class="navbar navbar-expand-md navbar-dark css-EuaFB border-bottom box-shadow mb-3" role="navigation">
+            <div class="container-fluid css-jpTJNR">
+                <a class="navbar-brand css-bLZDAV" asp-area="" asp-controller="Home" asp-action="Index">AnantDFW</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <!-- Inline SVG toggler to ensure visibility even if external CSS overrides the default icon -->
+                    <svg class="navbar-toggler-svg" width="24" height="18" viewBox="0 0 24 18" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                        <line x1="2" y1="3" x2="22" y2="3" stroke="white" stroke-width="2" stroke-linecap="round" />
+                        <line x1="2" y1="9" x2="22" y2="9" stroke="white" stroke-width="2" stroke-linecap="round" />
+                        <line x1="2" y1="15" x2="22" y2="15" stroke="white" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-md-0 css-ceakVg">
+                        <li class="nav-item css-iJiqqk"><a class="nav-link css-lWgfA" asp-area="" asp-controller="Home" asp-action="Index">Ride</a></li>
+                        <li class="nav-item css-iJiqqk"><a class="nav-link css-lWgfA" asp-area="" asp-controller="Home" asp-action="Lyft">Lyft</a></li>
+                        <li class="nav-item css-iJiqqk"><a class="nav-link css-lWgfA" asp-area="" asp-controller="Home" asp-action="Room">Room</a></li>
+                    </ul>
+                    <ul class="navbar-nav ms-auto mb-2 mb-md-0 css-e0LFUs">
+                        <li class="nav-item css-iJiqqk"><a class="nav-link btn disabled css-lWgfA" href="https://help.uber.com/" target="_self" aria-label="Help">Help</a></li>
+                        <li class="nav-item css-iJiqqk"><a class="nav-link btn disabled css-bJdzmm" href="https://m.uber.com/looking" target="_self" aria-label="Log in" disabled>Log in</a></li>
+                        <li class="nav-item css-dmqvLf"><a class="nav-link btn disabled css-evYoZq" href="https://m.uber.com/looking" target="_self" aria-label="Sign up" disabled>Sign up</a></li>
+                    </ul>
                 </div>
-                </div>
+            </div>
+        </nav>
 
     </header>
     <div class="container">

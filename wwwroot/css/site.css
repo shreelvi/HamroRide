@@ -745,17 +745,6 @@ main:has(input[type="checkbox"]#hamburger-input:not(:checked)) .ssr-drawer-wrapp
 
 .css-bWHXse {
     cursor: pointer;
-    margin-top: 0;
-    margin-bottom: 0;
-    margin-left: 0;
-    margin-right: 0;
-    overflow: auto;
-    padding-top: 0;
-    padding-bottom: 0;
-    padding-left: 0;
-    padding-right: 0;
-    position: relative;
-    outline: none;
 }
 
 .css-guiGWC {
@@ -780,6 +769,85 @@ main:has(input[type="checkbox"]#hamburger-input:not(:checked)) .ssr-drawer-wrapp
     line-height: 40px;
     margin-top: 16px;
     margin-bottom: 16px;
+}
+
+/* Navbar overrides appended safely at EOF */
+.navbar {
+    background-color: #276EF1 !important; /* violet-blue */
+}
+.navbar .css-lWgfA,
+.navbar .css-iJiqqk > a.css-lWgfA,
+.navbar .nav-link.css-lWgfA {
+    color: #ffffff !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    padding: 0.375rem 0.75rem !important;
+    font-weight: 500;
+}
+.navbar .nav-item .btn.css-bJdzmm,
+.navbar .nav-item .btn.css-evYoZq {
+    background-color: rgba(255,255,255,0.12) !important;
+    color: #fff !important;
+    box-shadow: none !important;
+    border: 1px solid rgba(255,255,255,0.18) !important;
+    border-radius: 4px !important;
+    padding: 0.35rem 0.7rem !important;
+}
+.navbar .navbar-brand.css-bLZDAV {
+    color: #fff !important;
+}
+
+/* Ensure the Bootstrap navbar toggler is visible on small screens and has a white hamburger icon
+   This is a scoped fallback in case other CSS overrides hid or removed the default icon. */
+.navbar-toggler {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    padding: 0.25rem 0.5rem;
+    margin-left: 0.5rem;
+}
+.navbar-toggler:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.15rem rgba(255,255,255,0.12);
+}
+.navbar-toggler-icon {
+    display: inline-block;
+    width: 22px;
+    height: 16px;
+    background-image: linear-gradient(#fff, #fff), linear-gradient(#fff, #fff), linear-gradient(#fff, #fff);
+    background-position: center 0px, center 7px, center 14px;
+    background-size: 100% 2px;
+    background-repeat: no-repeat;
+}
+
+@media (min-width: 768px) {
+    /* on larger screens Bootstrap shows full menu; ensure toggler doesn't appear */
+    .navbar-toggler { display: none !important; }
+}
+
+/* Force toggler to be visible and above other header elements on small screens.
+   Some generated classes previously caused brand or other elements to expand and cover it.
+   This rule positions the toggler on the right and gives it a high z-index. */
+@media (max-width: 767.98px) {
+    .navbar .navbar-toggler {
+        display: inline-flex !important;
+        position: absolute !important;
+        right: 12px !important;
+        /* move slightly upward from vertical center so it's not covered */
+        top: 18px !important;
+        transform: translateY(0) !important;
+        z-index: 5000 !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        border: none !important;
+        background-color: rgba(255,140,0,0.14) !important; /* orange-tint background */
+    }
+    /* Make sure the brand doesn't cover the toggler */
+    .navbar .navbar-brand {
+        margin-right: 56px !important; /* leave space for toggler */
+    }
 }
 
 .css-frRZoc {
@@ -8560,4 +8628,61 @@ label {
     margin-top: 0px;
     margin-bottom: 0px;
     margin-left: 0px;
+}
+
+/* Ensure inline SVG toggler is visible and sized correctly */
+
+.navbar-toggler .navbar-toggler-svg {
+    display: block;
+    width: 24px;
+    height: 18px;
+}
+.navbar-toggler { opacity: 1 !important; visibility: visible !important; }
+
+/* Stronger visual override: give toggler a visible circular background and force white strokes */
+.navbar .navbar-toggler {
+    background-color: rgba(255,140,0,0.14) !important; /* orange tint */
+    border-radius: 6px !important;
+    padding: 6px !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15) !important;
+}
+.navbar-toggler .navbar-toggler-svg line {
+    stroke: #ff8c00 !important; /* orange stroke */
+    stroke-width: 3 !important;
+}
+.navbar-toggler { pointer-events: auto !important; }
+
+/* Ensure the collapsed navbar panel is visible and readable on small screens */
+@media (max-width: 767.98px) {
+    .navbar .navbar-collapse {
+        /* match header background so expanded menu items are visible */
+        background-color: #276EF1 !important;
+        position: absolute !important;
+        left: 0;
+        right: 0;
+        top: 64px; /* place directly under the header */
+        padding: 0.5rem 1rem !important;
+        z-index: 2500 !important;
+        border-radius: 0 0 6px 6px !important;
+    }
+    .navbar .navbar-collapse .nav-link,
+    .navbar .navbar-collapse .css-lWgfA {
+        color: #ffffff !important;
+        background-color: transparent !important;
+        padding: 0.5rem 0 !important;
+        display: block !important;
+    }
+    .navbar .navbar-collapse .css-e0LFUs {
+        display: block !important;
+        margin-top: 0.5rem !important;
+    }
+    .navbar .navbar-collapse .css-e0LFUs .btn.css-bJdzmm,
+    .navbar .navbar-collapse .css-e0LFUs .btn.css-evYoZq {
+        background-color: rgba(255,255,255,0.12) !important;
+        color: #fff !important;
+        display: inline-block !important;
+        margin-right: 0.5rem !important;
+    }
 }
