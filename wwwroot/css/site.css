@@ -835,14 +835,15 @@ main:has(input[type="checkbox"]#hamburger-input:not(:checked)) .ssr-drawer-wrapp
         display: inline-flex !important;
         position: absolute !important;
         right: 12px !important;
-        /* move slightly upward from vertical center so it's not covered */
-        top: 18px !important;
+        /* move slightly upward from top so it's clearly above the menu */
+        top: 10px !important;
         transform: translateY(0) !important;
-        z-index: 5000 !important;
+        z-index: 6000 !important;
         visibility: visible !important;
         opacity: 1 !important;
         border: none !important;
-        background-color: rgba(255,140,0,0.14) !important; /* orange-tint background */
+        background-color: rgba(255,140,0,0.18) !important; /* orange-tint background */
+        padding: 8px !important;
     }
     /* Make sure the brand doesn't cover the toggler */
     .navbar .navbar-brand {
@@ -8666,17 +8667,26 @@ label {
         padding: 0.5rem 1rem !important;
         z-index: 2500 !important;
         border-radius: 0 0 6px 6px !important;
+        /* keep collapsed by default; only show when Bootstrap adds .show */
+        display: none !important;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.12) !important;
+    }
+    .navbar .navbar-collapse.show,
+    .navbar .navbar-collapse.collapse.show {
+        display: block !important;
     }
     .navbar .navbar-collapse .nav-link,
     .navbar .navbar-collapse .css-lWgfA {
         color: #ffffff !important;
         background-color: transparent !important;
-        padding: 0.5rem 0 !important;
+        padding: 0.65rem 0.25rem !important;
         display: block !important;
+        border-bottom: 1px solid rgba(255,255,255,0.06) !important;
     }
     .navbar .navbar-collapse .css-e0LFUs {
         display: block !important;
         margin-top: 0.5rem !important;
+        padding-top: 0.5rem !important;
     }
     .navbar .navbar-collapse .css-e0LFUs .btn.css-bJdzmm,
     .navbar .navbar-collapse .css-e0LFUs .btn.css-evYoZq {
@@ -8684,5 +8694,16 @@ label {
         color: #fff !important;
         display: inline-block !important;
         margin-right: 0.5rem !important;
+    }
+    /* Make the main nav list stack cleanly and be scrollable if long */
+    .navbar .css-ceakVg {
+        display: block !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: auto !important;
+        max-height: calc(100vh - 120px) !important;
+    }
+    .navbar .css-ceakVg li {
+        margin: 0 !important;
     }
 }
