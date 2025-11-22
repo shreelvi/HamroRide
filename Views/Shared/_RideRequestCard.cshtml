@@ -41,11 +41,18 @@
         // Whitelist of safe hosts for external links (only allow messenger-related hosts or explicit protocols)
         var allowedHosts = new[] { "m.me", "messenger.com", "www.messenger.com", "facebook.com", "www.facebook.com" };
         bool linkAllowed = false;
+        string linkLabel = "Message"; // default label shown next to the icon
         if (!string.IsNullOrEmpty(href))
         {
-            if (href.StartsWith("tel:") || href.StartsWith("mailto:"))
+            if (href.StartsWith("tel:"))
             {
                 linkAllowed = true;
+                linkLabel = "Call";
+            }
+            else if (href.StartsWith("mailto:"))
+            {
+                linkAllowed = true;
+                linkLabel = "Email";
             }
             else if (Uri.TryCreate(href, UriKind.Absolute, out var u))
             {
@@ -55,6 +62,8 @@
                     if (u.Host.Equals(ah, StringComparison.OrdinalIgnoreCase) || u.Host.EndsWith("." + ah, StringComparison.OrdinalIgnoreCase))
                     {
                         linkAllowed = true;
+                        // if it's a messenger host, prefer the Messenger label
+                        linkLabel = ah.Contains("messenger") || ah.Contains("m.me") || ah.Contains("facebook") ? "Messenger" : linkLabel;
                         break;
                     }
                 }
@@ -65,7 +74,7 @@
     <h6 class="card-subtitle mb-2 text-muted" title="@Model.Contact">
         @if (!string.IsNullOrWhiteSpace(contactRaw) && linkAllowed && !string.IsNullOrEmpty(href))
         {
-            <a href="@href" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:6px;text-decoration:none;color:inherit;">
+            <a href="@href" target="_blank" rel="noopener noreferrer" aria-label="@($"{linkLabel}: {contactRaw}")" style="display:inline-flex;align-items:center;gap:6px;text-decoration:none;color:inherit;">
                 @* Messenger icon (simple chat bubble with lightning) *@
                 <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" role="img">
                     <!-- Refined messenger-style icon: blue chat bubble with white bolt -->
@@ -73,7 +82,8 @@
                     <path fill="#fff" d="M9.5 13.5L11 10.5l2.5 3.5L13 11.5 9.5 15.5l.0-.0z" />
                     <!-- The bolt path is simplified and intentionally lightweight to avoid complex vectors -->
                 </svg>
-                <span>@Html.Raw(contactDisplay)</span>
+                <span class="ms-1">@Html.Encode(linkLabel)</span>
+                <span class="text-muted ms-2 d-none d-md-inline">@Html.Raw(contactDisplay)</span>
             </a>
         }
         else if (!string.IsNullOrWhiteSpace(contactRaw))

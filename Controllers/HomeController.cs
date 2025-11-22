@@ -21,6 +21,107 @@ public class HomeController : Controller
         _db = db;
     }
 
+    // GET: /Home/Lyft
+    [HttpGet]
+    public async Task<IActionResult> Lyft(DateTime? dateFrom = null, DateTime? dateTo = null, TimeSpan? timeFrom = null, TimeSpan? timeTo = null, string? pickup = null, string? dropoff = null, string? sortBy = null, string? sortDir = "asc", int page = 1, int pageSize = 20, bool includeAll = true)
+    {
+        var vm = new gurujiRide.Models.LyftViewModel
+        {
+            DateFrom = dateFrom,
+            DateTo = dateTo,
+            TimeFrom = timeFrom,
+            TimeTo = timeTo,
+            Pickup = pickup,
+            Dropoff = dropoff,
+            SortBy = sortBy,
+            SortDir = sortDir,
+            IncludeAll = includeAll,
+            Page = Math.Max(1, page),
+            PageSize = Math.Clamp(pageSize, 5, 200)
+        };
+
+        try
+        {
+            if (_db.Database.CanConnect() && await DbHasCreatedAtColumnAsync())
+            {
+                // Build a server-side query. By default return only scheduled requests later than now,
+                // but when includeAll is true return all rides (including past and missing-date entries).
+                var q = _db.RideRequests.AsNoTracking().AsQueryable();
+                if (!vm.IncludeAll)
+                {
+                    var today = DateTime.Today;
+                    var nowTime = DateTime.Now.TimeOfDay;
+                    q = q.Where(r => r.Date.HasValue && (
+                        r.Date > today || (r.Date == today && ( (r.Time ?? TimeSpan.Zero) > nowTime ))
+                    ));
+                }
+
+                // Apply additional filters
+                if (vm.DateFrom.HasValue)
+                {
+                    var df = vm.DateFrom.Value.Date;
+                    q = q.Where(r => r.Date >= df);
+                }
+                if (vm.DateTo.HasValue)
+                {
+                    var dt = vm.DateTo.Value.Date;
+                    q = q.Where(r => r.Date <= dt);
+                }
+                if (vm.TimeFrom.HasValue)
+                {
+                    var tf = vm.TimeFrom.Value;
+                    q = q.Where(r => (r.Time ?? TimeSpan.Zero) >= tf);
+                }
+                if (vm.TimeTo.HasValue)
+                {
+                    var tt = vm.TimeTo.Value;
+                    q = q.Where(r => (r.Time ?? TimeSpan.Zero) <= tt);
+                }
+                if (!string.IsNullOrWhiteSpace(vm.Pickup))
+                {
+                    var pick = vm.Pickup.Trim();
+                    q = q.Where(r => EF.Functions.Like(r.Pickup ?? string.Empty, $"%{pick}%"));
+                }
+                if (!string.IsNullOrWhiteSpace(vm.Dropoff))
+                {
+                    var drop = vm.Dropoff.Trim();
+                    q = q.Where(r => EF.Functions.Like(r.Dropoff ?? string.Empty, $"%{drop}%"));
+                }
+
+                // Total count before paging
+                vm.TotalItems = await q.CountAsync();
+
+                // Sorting
+                sortBy = (vm.SortBy ?? "date").ToLowerInvariant();
+                sortDir = (vm.SortDir ?? "asc").ToLowerInvariant();
+
+                IOrderedQueryable<RideRequest> ordered = sortBy switch
+                {
+                    "pickup" => sortDir == "desc" ? q.OrderByDescending(r => r.Pickup) : q.OrderBy(r => r.Pickup),
+                    "dropoff" => sortDir == "desc" ? q.OrderByDescending(r => r.Dropoff) : q.OrderBy(r => r.Dropoff),
+                    "created" => sortDir == "desc" ? q.OrderByDescending(r => r.CreatedAt) : q.OrderBy(r => r.CreatedAt),
+                    _ => sortDir == "desc" ? q.OrderByDescending(r => r.Date).ThenByDescending(r => r.Time) : q.OrderBy(r => r.Date).ThenBy(r => r.Time),
+                };
+
+                // Paging
+                vm.Results = await ordered.Skip((vm.Page - 1) * vm.PageSize).Take(vm.PageSize).ToListAsync();
+            }
+            else
+            {
+                vm.TotalItems = 0;
+                vm.Results = new List<RideRequest>();
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Error preparing Lyft list - returning empty results");
+            vm.TotalItems = 0;
+            vm.Results = new List<RideRequest>();
+        }
+
+        return View(vm);
+    }
+
     // GET: /Home/LoadMore
     [HttpGet]
     public async Task<IActionResult> LoadMore(int skip = 0, int take = 11)
@@ -176,6 +277,8 @@ public class HomeController : Controller
     {
         return View();
     }
+
+
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

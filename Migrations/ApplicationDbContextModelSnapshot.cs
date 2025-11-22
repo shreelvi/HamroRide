@@ -61,7 +61,7 @@ namespace gurujiRide.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RideRequests");
+                    b.ToTable("RideRequests", (string)null);
                 });
 #pragma warning restore 612, 618
         }

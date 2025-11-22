@@ -1,0 +1,107 @@
+@model gurujiRide.Models.LyftViewModel
+
+@{
+    ViewData["Title"] = "Lyft Requests";
+}
+
+<h2>Lyft - Requests</h2>
+
+<div class="mb-2">
+    <a asp-action="Lyft"
+       asp-route-includeAll="@(Model.IncludeAll ? "false" : "true")"
+       asp-route-dateFrom="@(Model.DateFrom?.ToString("yyyy-MM-dd"))"
+       asp-route-dateTo="@(Model.DateTo?.ToString("yyyy-MM-dd"))"
+       asp-route-timeFrom="@(Model.TimeFrom?.ToString(@"hh\:mm"))"
+       asp-route-timeTo="@(Model.TimeTo?.ToString(@"hh\:mm"))"
+       asp-route-pickup="@Model.Pickup"
+       asp-route-dropoff="@Model.Dropoff"
+       asp-route-sortBy="@Model.SortBy"
+       asp-route-sortDir="@Model.SortDir"
+       class="btn btn-outline-secondary btn-sm">
+        @(Model.IncludeAll ? "Showing: All rides — switch to upcoming only" : "Show all rides")
+    </a>
+</div>
+
+<form method="get" asp-action="Lyft" class="row g-3 mb-3">
+    <div class="col-md-2">
+        <label class="form-label">From date</label>
+        <input class="form-control" type="date" name="dateFrom" value="@(Model.DateFrom?.ToString("yyyy-MM-dd") ?? string.Empty)" />
+    </div>
+    <div class="col-md-2">
+        <label class="form-label">To date</label>
+        <input class="form-control" type="date" name="dateTo" value="@(Model.DateTo?.ToString("yyyy-MM-dd") ?? string.Empty)" />
+    </div>
+    <div class="col-md-2">
+        <label class="form-label">From time</label>
+        <input class="form-control" type="time" name="timeFrom" value="@(Model.TimeFrom?.ToString(@"hh\:mm") ?? string.Empty)" />
+    </div>
+    <div class="col-md-2">
+        <label class="form-label">To time</label>
+        <input class="form-control" type="time" name="timeTo" value="@(Model.TimeTo?.ToString(@"hh\:mm") ?? string.Empty)" />
+    </div>
+    <div class="col-md-2">
+        <label class="form-label">Pickup</label>
+        <input class="form-control" type="search" name="pickup" value="@(Model.Pickup ?? string.Empty)" />
+    </div>
+    <div class="col-md-2">
+        <label class="form-label">Dropoff</label>
+        <input class="form-control" type="search" name="dropoff" value="@(Model.Dropoff ?? string.Empty)" />
+    </div>
+
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">Filter</button>
+        <a asp-action="Lyft" class="btn btn-secondary ms-2">Reset</a>
+    </div>
+</form>
+
+<div class="mb-2 d-flex align-items-center justify-content-between">
+    <div>
+        <strong>@(Model.TotalItems)</strong> matching upcoming requests
+    </div>
+    <div>
+        Sort:
+        <a asp-action="Lyft" asp-route-sortBy="date" asp-route-sortDir="@(Model.SortBy == "date" && Model.SortDir == "asc" ? "desc" : "asc")" asp-route-dateFrom="@(Model.DateFrom?.ToString("yyyy-MM-dd"))" asp-route-dateTo="@(Model.DateTo?.ToString("yyyy-MM-dd"))" asp-route-timeFrom="@(Model.TimeFrom?.ToString(@"hh\:mm"))" asp-route-timeTo="@(Model.TimeTo?.ToString(@"hh\:mm"))" asp-route-pickup="@Model.Pickup" asp-route-dropoff="@Model.Dropoff">Date</a>
+        |
+        <a asp-action="Lyft" asp-route-sortBy="pickup" asp-route-sortDir="@(Model.SortBy == "pickup" && Model.SortDir == "asc" ? "desc" : "asc")" asp-route-dateFrom="@(Model.DateFrom?.ToString("yyyy-MM-dd"))" asp-route-dateTo="@(Model.DateTo?.ToString("yyyy-MM-dd"))" asp-route-timeFrom="@(Model.TimeFrom?.ToString(@"hh\:mm"))" asp-route-timeTo="@(Model.TimeTo?.ToString(@"hh\:mm"))" asp-route-pickup="@Model.Pickup" asp-route-dropoff="@Model.Dropoff">Pickup</a>
+        |
+        <a asp-action="Lyft" asp-route-sortBy="dropoff" asp-route-sortDir="@(Model.SortBy == "dropoff" && Model.SortDir == "asc" ? "desc" : "asc")" asp-route-dateFrom="@(Model.DateFrom?.ToString("yyyy-MM-dd"))" asp-route-dateTo="@(Model.DateTo?.ToString("yyyy-MM-dd"))" asp-route-timeFrom="@(Model.TimeFrom?.ToString(@"hh\:mm"))" asp-route-timeTo="@(Model.TimeTo?.ToString(@"hh\:mm"))" asp-route-pickup="@Model.Pickup" asp-route-dropoff="@Model.Dropoff">Dropoff</a>
+    </div>
+</div>
+
+@if (Model.Results == null || !Model.Results.Any())
+{
+    <div class="alert alert-info">No upcoming requests found matching your filters.</div>
+}
+else
+{
+    <div class="row">
+        <div class="col-12">
+            @await Html.PartialAsync("_RideRequestCards", Model.Results)
+        </div>
+    </div>
+
+    <nav aria-label="Page navigation" class="mt-3">
+        @{ var totalPages = (int)Math.Ceiling((double)Model.TotalItems / Model.PageSize); }
+        <ul class="pagination">
+            <li class="page-item @(Model.Page <= 1 ? "disabled" : "")">
+                <a class="page-link" asp-action="Lyft" asp-route-page="@(Model.Page - 1)" asp-route-pageSize="@Model.PageSize" asp-route-sortBy="@Model.SortBy" asp-route-sortDir="@Model.SortDir" asp-route-dateFrom="@(Model.DateFrom?.ToString("yyyy-MM-dd"))" asp-route-dateTo="@(Model.DateTo?.ToString("yyyy-MM-dd"))" asp-route-timeFrom="@(Model.TimeFrom?.ToString(@"hh\:mm"))" asp-route-timeTo="@(Model.TimeTo?.ToString(@"hh\:mm"))" asp-route-pickup="@Model.Pickup" asp-route-dropoff="@Model.Dropoff">Previous</a>
+            </li>
+
+            @for (int p = 1; p <= Math.Max(1, totalPages); p++)
+            {
+                <li class="page-item @(p == Model.Page ? "active" : "")">
+                    <a class="page-link" asp-action="Lyft" asp-route-page="@p" asp-route-pageSize="@Model.PageSize" asp-route-sortBy="@Model.SortBy" asp-route-sortDir="@Model.SortDir" asp-route-dateFrom="@(Model.DateFrom?.ToString("yyyy-MM-dd"))" asp-route-dateTo="@(Model.DateTo?.ToString("yyyy-MM-dd"))" asp-route-timeFrom="@(Model.TimeFrom?.ToString(@"hh\:mm"))" asp-route-timeTo="@(Model.TimeTo?.ToString(@"hh\:mm"))" asp-route-pickup="@Model.Pickup" asp-route-dropoff="@Model.Dropoff">@p</a>
+                </li>
+            }
+
+            <li class="page-item @(Model.Page >= totalPages ? "disabled" : "")">
+                <a class="page-link" asp-action="Lyft" asp-route-page="@(Model.Page + 1)" asp-route-pageSize="@Model.PageSize" asp-route-sortBy="@Model.SortBy" asp-route-sortDir="@Model.SortDir" asp-route-dateFrom="@(Model.DateFrom?.ToString("yyyy-MM-dd"))" asp-route-dateTo="@(Model.DateTo?.ToString("yyyy-MM-dd"))" asp-route-timeFrom="@(Model.TimeFrom?.ToString(@"hh\:mm"))" asp-route-timeTo="@(Model.TimeTo?.ToString(@"hh\:mm"))" asp-route-pickup="@Model.Pickup" asp-route-dropoff="@Model.Dropoff">Next</a>
+            </li>
+        </ul>
+    </nav>
+
+}
+
+<div class="mt-4 small text-muted">
+    Note: results show requests scheduled later than now. Sorting and filtering are applied server-side.
+</div>
