@@ -516,7 +516,7 @@
 
 
                                                         <div style="margin:12px 0;">
-                                                            <button type="submit" class="css-cxqKro">Request
+                                                            <button type="submit" class="btn btn-outline-primary">Request
                                                                 ride</button>
                                                         </div>
                                                     </div>
@@ -534,8 +534,12 @@
                                                 <div>Time: @Model?.NewRequest?.Time?.ToString(@"hh\:mm")</div>
                                             </div>
                                         }
-                                    </form>
+                                        </form>
 
+                                <!-- Offer CTA placed below the main request form. Opens Offer page in a new tab. -->
+                                <div style="clear:both; margin-top:12px; margin-bottom:12px; max-width:520px;">
+                                    <small class="d-block mt-2 text-muted">Going somewhere and want to offer a ride?                                      <a asp-action="Offer" target="_blank" rel="noopener noreferrer" class="">Offer a ride</a></small>
+                                </div>
 
                                 </div>
                             </div>
@@ -549,7 +553,7 @@
                                 <div class="cards-grid d-flex flex-wrap">
                                     @if (Model?.RecentRequests != null && Model.RecentRequests.Any())
                                     {
-                                        foreach (var req in Model.RecentRequests)
+                                        foreach (var req in Model.RecentRequests.Take(4))
                                         {
                                             @await Html.PartialAsync("_RideRequestCard", req)
                                         }
@@ -562,6 +566,24 @@
 
                                 <div style="margin-top:12px; display:flex; justify-content:center; align-items:center; min-height:32px;">
                                     <a asp-action="Lyft" asp-route-includeAll="true" class="btn btn-outline-primary">Load more / View all on Lyft page</a>
+                                </div>
+
+                                <!-- Latest ride offers (show below recent requests) -->
+                                <div style="margin-top:18px;">
+                                    <h2 class="css-bIdYaZ">Recent ride offers</h2>
+                                    <div class="cards-grid d-flex flex-wrap">
+                                        @if (Model?.RecentOffers != null && Model.RecentOffers.Any())
+                                        {
+                                            foreach (var o in Model.RecentOffers.Take(4))
+                                            {
+                                                @await Html.PartialAsync("_OfferRideCard", o)
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <div>No recent offers to show.</div>
+                                        }
+                                    </div>
                                 </div>
                             </div>
 

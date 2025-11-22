@@ -187,6 +187,13 @@ public class HomeController : Controller
                     .Take(take)
                     .AsNoTracking()
                     .ToListAsync();
+                // Also load recent offers so the right panel can show both lists if desired
+                vm.RecentOffers = await _db.OfferRides
+                    .OrderByDescending(o => o.CreatedAt)
+                    .Skip(skip)
+                    .Take(take)
+                    .AsNoTracking()
+                    .ToListAsync();
             }
             else
             {
@@ -201,6 +208,19 @@ public class HomeController : Controller
                     Date = DateTime.Today.AddDays(i % 3),
                     Time = TimeSpan.FromMinutes(30 * (i % 6)),
                     CreatedAt = DateTime.UtcNow.AddMinutes(-5 * (i + skip))
+                }).ToList();
+                // sample offers fallback
+                vm.RecentOffers = Enumerable.Range(0, take).Select(i => new OfferRide
+                {
+                    Id = i + 1 + skip,
+                    Name = $"Test Driver {i + 1 + skip}",
+                    Contact = "https://m.me/example",
+                    Pickup = "Sample pickup",
+                    Dropoff = "Sample dropoff",
+                    Date = DateTime.Today.AddDays(i % 3),
+                    Time = TimeSpan.FromMinutes(30 * (i % 6)),
+                    Note = "Sample note",
+                    CreatedAt = DateTime.UtcNow.AddMinutes(-10 * (i + skip))
                 }).ToList();
             }
         }
@@ -271,6 +291,40 @@ public class HomeController : Controller
 
         // Redirect to GET (PRG) to show the updated list (or sample data)
         return RedirectToAction(nameof(Index));
+    }
+
+    // POST: /Home/Offer
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Offer(OfferRide offer)
+    {
+        if (!ModelState.IsValid)
+        {
+            // If invalid, redirect back to Index so the page shows validation messages (simpler PRG could be improved)
+            return RedirectToAction(nameof(Index));
+        }
+
+        offer.CreatedAt = DateTime.UtcNow;
+        try
+        {
+            _db.OfferRides.Add(offer);
+            await _db.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Unable to save OfferRide to DB (maybe migration not applied). The offer will not be persisted.");
+        }
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    // GET: /Home/Offer
+    [HttpGet]
+    public IActionResult Offer()
+    {
+        ViewData["Title"] = "Offer a ride";
+        var model = new OfferRide();
+        return View(model);
     }
 
     public IActionResult Privacy()

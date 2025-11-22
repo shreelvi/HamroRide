@@ -1,0 +1,60 @@
+@model gurujiRide.Models.OfferRide
+@{
+    ViewData["Title"] = "Offer a ride";
+}
+
+<div class="container-inner" style="max-width:760px; margin:12px auto;">
+    <h1 class="css-bIdYaZ">Offer a ride</h1>
+
+    <form method="post" asp-action="Offer">
+        @Html.AntiForgeryToken()
+
+        <div class="mb-2">
+            <label asp-for="Pickup" class="form-label">Pickup</label>
+            <input asp-for="Pickup" class="form-control css-fsnQlw" placeholder="Pickup location" />
+            <span asp-validation-for="Pickup" class="text-danger"></span>
+        </div>
+
+        <div class="mb-2">
+            <label asp-for="Dropoff" class="form-label">Dropoff</label>
+            <input asp-for="Dropoff" class="form-control css-fsnQlw" placeholder="Dropoff location" />
+            <span asp-validation-for="Dropoff" class="text-danger"></span>
+        </div>
+
+        <div class="mb-2 d-flex gap-2">
+            <div style="flex:1">
+                <label asp-for="Date" class="form-label">Date</label>
+                <input asp-for="Date" type="date" class="form-control css-eSRvYO" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+            <div style="width:140px">
+                <label asp-for="Time" class="form-label">Time</label>
+                <input asp-for="Time" type="time" class="form-control" />
+                <span asp-validation-for="Time" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="mb-2">
+            <label asp-for="Name" class="form-label">Name</label>
+            <input asp-for="Name" class="form-control css-fsnQlw" placeholder="Name" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="mb-2">
+            <label asp-for="Contact" class="form-label">Contact</label>
+            <input asp-for="Contact" class="form-control css-fsnQlw" placeholder="Contact(number/FBMessengerLink)" />
+            <span asp-validation-for="Contact" class="text-danger"></span>
+        </div>
+
+        <div class="mb-2">
+            <label asp-for="Note" class="form-label">Note (optional)</label>
+            <textarea asp-for="Note" class="form-control css-fsnQlw" rows="4"></textarea>
+            <span asp-validation-for="Note" class="text-danger"></span>
+        </div>
+
+        <div class="mb-2">
+            <button type="submit" class="btn btn-primary css-cxqKro">Offer ride</button>
+            <a asp-action="Index" class="btn btn-link">Cancel</a>
+        </div>
+    </form>
+</div>
