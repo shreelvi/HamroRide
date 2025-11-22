@@ -99,12 +99,33 @@
     <p class="card-text" title="Pickup: @Model.Pickup; Dropoff: @Model.Dropoff">
       <strong>Pickup:</strong> @Html.Encode(Model.Pickup) <span class="mx-1">|</span>
       <strong>Dropoff:</strong> @Html.Encode(Model.Dropoff) <br />
-      <strong>Trip Date:</strong> @(Model.Date?.ToString("yyyy-MM-dd") ?? "—")
-      @if (Model.Time != null) { <text> @Model.Time.Value.ToString(@"hh\:mm")</text> }
+            <strong>Trip Date:</strong> @(Model.Date?.ToString("yyyy-MM-dd") ?? "—")
+            @{
+                    // Display trip time in 12-hour format
+                    string tripTimeDisplay = "—";
+                    if (Model.Time != null)
+                    {
+                            var ts = Model.Time.Value;
+                            // Build a DateTime from today's date + timespan so we can format with AM/PM
+                            var dt = DateTime.Today.Add(ts);
+                            tripTimeDisplay = dt.ToString("h:mm tt");
+                    }
+            }
+            @if (Model.Time != null) { <text> @tripTimeDisplay</text> }
     </p>
 
-    <div class="text-muted small" title="@Model.CreatedAt.ToLocalTime().ToString("g")">
-      Requested: @Model.CreatedAt.ToLocalTime().ToString("g")
-    </div>
+        @{ 
+            // Server-side fallback display (will be replaced client-side to user's local time).
+            var src = Model.CreatedAt.Kind == DateTimeKind.Unspecified
+                ? DateTime.SpecifyKind(Model.CreatedAt, DateTimeKind.Utc)
+                : Model.CreatedAt;
+            var createdAtLocal = src.ToLocalTime();
+            var createdAtDisplay = createdAtLocal.ToString("yyyy-MM-dd h:mm tt");
+            var createdAtIsoUtc = src.ToUniversalTime().ToString("o");
+        }
+
+        <div class="text-muted small" title="@createdAtDisplay">
+          <span class="js-created-at" data-utc="@createdAtIsoUtc">Requested: @createdAtDisplay</span>
+        </div>
   </div>
 </div>
