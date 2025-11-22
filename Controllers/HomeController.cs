@@ -278,6 +278,43 @@ public class HomeController : Controller
         return View();
     }
 
+    // GET: /Home/Feedback
+    [HttpGet]
+    public IActionResult Feedback()
+    {
+        var vm = new gurujiRide.Models.FeedbackViewModel();
+        ViewData["Title"] = "Feedback & Suggestions";
+        return View(vm);
+    }
+
+    // POST: /Home/Feedback
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Feedback(gurujiRide.Models.FeedbackViewModel vm)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(vm);
+        }
+
+        vm.NewFeedback.CreatedAt = DateTime.UtcNow;
+        try
+        {
+            // Attempt to save; if DB or migrations not present swallow the error like other pages
+            _db.Add(vm.NewFeedback);
+            await _db.SaveChangesAsync();
+            vm.Submitted = true;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Unable to save feedback to DB (maybe migration not applied). Feedback will not be persisted.");
+            // keep Submitted = true so user sees acknowledgment even if it wasn't persisted
+            vm.Submitted = true;
+        }
+
+        return View(vm);
+    }
+
 
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -1,0 +1,68 @@
+@model gurujiRide.Models.FeedbackViewModel
+@{
+    ViewData["Title"] = "Feedback & Suggestions";
+}
+
+<div class="container feedback-page">
+    <div class="row justify-content-center mt-4">
+        <div class="col-12 col-md-8">
+            <div class="card feedback-card">
+                <div class="card-body">
+                    <h1 class="h4 mb-3">We'd love your feedback</h1>
+
+                    @if (Model?.Submitted == true)
+                    {
+                        <div class="alert alert-success" role="alert">
+                            Thank you — your feedback has been received.
+                        </div>
+                    }
+
+                    <form asp-action="Feedback" method="post">
+                        @Html.AntiForgeryToken()
+
+                        <div class="mb-3">
+                            <label asp-for="NewFeedback.Name" class="form-label">Name</label>
+                            <input asp-for="NewFeedback.Name" class="form-control" />
+                            <span class="text-danger" asp-validation-for="NewFeedback.Name"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="NewFeedback.Email" class="form-label">Email</label>
+                            <input asp-for="NewFeedback.Email" class="form-control" />
+                            <span class="text-danger" asp-validation-for="NewFeedback.Email"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="NewFeedback.Category" class="form-label">Category (optional)</label>
+                            <select asp-for="NewFeedback.Category" class="form-select">
+                                <option value="">General</option>
+                                <option>Bug</option>
+                                <option>Suggestion</option>
+                                <option>UX</option>
+                                <option>Other</option>
+                            </select>
+                            <span class="text-danger" asp-validation-for="NewFeedback.Category"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="NewFeedback.Message" class="form-label">Message</label>
+                            <textarea asp-for="NewFeedback.Message" class="form-control" rows="6"></textarea>
+                            <span class="text-danger" asp-validation-for="NewFeedback.Message"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary">Send feedback</button>
+                        </div>
+                    </form>
+
+                    <hr />
+                    <p class="small text-muted mt-2">By sending feedback you agree we may review it to improve the service. We won't sell your information.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

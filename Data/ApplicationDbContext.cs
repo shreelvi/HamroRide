@@ -10,4 +10,5 @@ public class ApplicationDbContext : DbContext
     }
 
     public DbSet<RideRequest> RideRequests { get; set; } = default!;
+    public DbSet<gurujiRide.Models.Feedback> Feedbacks { get; set; } = default!;
 }

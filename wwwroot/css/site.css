@@ -258,37 +258,7 @@ button.accept-policy {
     }
 }
 
-main:has(input[type="checkbox"]#hamburger-input:checked) .ssr-drawer-wrapper-content {
-    opacity: 1;
-    transform: translate3d(0px, 0%, 0px);
-    ;
-    visibility: visible;
-}
-
-main:has(input[type="checkbox"]#hamburger-input:not(:checked)) .ssr-drawer-wrapper-content {
-    opacity: 0;
-    transform: translate3d(0px, -100%, -10%);
-    visibility: hidden;
-}
-
-.css-PJNUH {
-    background-color: #FFFFFF;
-    border-radius: 8px;
-    box-shadow: 0 4px 16px hsla(0, 0%, 0%, 0.16);
-    height: 100%;
-    opacity: 0;
-    position: absolute;
-    top: 64px;
-    transform: translate3d(0px, -100%, -10%);
-    transition-duration: 250ms;
-    -webkit-transition-property: opacity, transform;
-    -moz-transition-property: opacity, transform;
-    transition-property: opacity, transform;
-    transition-timing-function: cubic-bezier(0.2, 0.8, 0.4, 1);
-    visibility: hidden;
-    width: 100%;
-    z-index: 1000;
-}
+/* Removed legacy hamburger/drawer CSS (replaced by Bootstrap navbar/collapse). */
 
 .css-hNYSyH {
     display: none;
@@ -1293,234 +1263,6 @@ main:has(input[type="checkbox"]#hamburger-input:not(:checked)) .ssr-drawer-wrapp
     }
 }
 
-.css-EuaFB {
-    /* font-family: UberMoveText, system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif; */
-    font-size: 16px;
-    font-weight: normal;
-    line-height: 24px;
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    padding-bottom: 12px;
-    padding-top: 12px;
-    border-bottom-width: 0;
-    border-bottom-style: solid;
-    border-bottom-color: #F3F3F3;
-    background-color: blueviolet;
-    box-sizing: border-box;
-    height: 64px;
-    padding-left: 0;
-    padding-right: 0;
-    position: -webkit-sticky;
-    position: sticky;
-    top: 0;
-    transition-duration: 300ms;
-    -webkit-transition-property: top;
-    -moz-transition-property: top;
-    transition-property: top;
-    z-index: 2002;
-}
-
-.css-jpTJNR {
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    position: relative;
-    width: 100%;
-}
-
-.css-hWkSKL {
-    box-sizing: border-box;
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-box-pack: normal;
-    justify-content: normal;
-    margin-left: auto;
-    margin-right: auto;
-    max-width: calc(1280px + 64px * 2);
-    padding-left: 64px;
-    padding-right: 64px;
-    width: 100%;
-}
-
-.css-bLZDAV {
-    color: #FFFFFF;
-    font-family: UberMove, UberMoveText, system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 20px;
-    font-weight: 400;
-    line-height: 112px;
-    -webkit-transition-property: backgroundSize;
-    -moz-transition-property: backgroundSize;
-    transition-property: backgroundSize;
-    transition-duration: 500ms;
-    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-    position: relative;
-    text-decoration: none;
-    text-underline-position: under;
-    will-change: background-size;
-    background-size: 0% 100%, 100% 100%;
-    background-repeat: no-repeat;
-    background-image: none;
-    -webkit-box-align: center;
-    align-items: center;
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    height: 100%;
-    text-align: left;
-    top: 0;
-    white-space: nowrap;
-}
-
-.css-bLZDAV:hover {
-    color: #FFFFFF;
-    background-size: 100% 100%, 100% 100%;
-}
-
-.css-bLZDAV:focus {
-    outline: none;
-    outline-offset: 1px;
-    text-decoration: none;
-}
-
-.css-bLZDAV:visited {
-    color: #FFFFFF;
-}
-
-.css-bLZDAV:active {
-    color: #FFFFFF;
-}
-
-@media screen and (min-width: 1136px) {
-    .css-bLZDAV {
-        font-size: 24px;
-    }
-}
-
-.css-ceakVg {
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-box-flex: 1;
-    flex-grow: 1;
-    flex-shrink: 1;
-    flex-basis: auto;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    justify-self: flex-start;
-    -webkit-box-pack: start;
-    justify-content: flex-start;
-    list-style: none;
-    margin-bottom: 0;
-    margin-top: 0;
-    margin-left: 24px;
-    margin-right: 24px;
-    overflow: hidden;
-    padding-bottom: 0 !important;
-    padding-top: 0 !important;
-    visibility: visible;
-}
-
-.css-ceakVg:first-child {
-    padding: 0;
-}
-
-.css-ceakVg:last-child {
-    padding: 0;
-}
-
-.css-iJiqqk {
-    -ms-grid-row-align: center;
-    align-self: center;
-    padding-left: 0;
-    margin-bottom: 0;
-    visibility: inherit;
-    padding-right: 4px;
-}
-
-.css-lWgfA {
-    display: -webkit-inline-box;
-    display: -moz-inline-box;
-    display: -ms-inline-flexbox;
-    display: -webkit-inline-flex;
-    display: inline-flex;
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
-    flex-direction: row;
-    -webkit-box-align: center;
-    align-items: center;
-    -webkit-box-pack: center;
-    justify-content: center;
-    border-left-width: 0;
-    border-top-width: 0;
-    border-right-width: 0;
-    border-bottom-width: 0;
-    border-left-style: none;
-    border-top-style: none;
-    border-right-style: none;
-    border-bottom-style: none;
-    outline: none;
-    box-sizing: border-box;
-    box-shadow: none;
-    text-decoration: none;
-    -webkit-appearance: none;
-    -webkit-transition-property: background;
-    -moz-transition-property: background;
-    transition-property: background;
-    transition-duration: 200ms;
-    transition-timing-function: cubic-bezier(0, 0, 1, 1);
-    cursor: pointer;
-    margin-left: 0;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    font-family: UberMoveText, system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 16px;
-    border-top-right-radius: 999px;
-    border-bottom-right-radius: 999px;
-    border-top-left-radius: 999px;
-    border-bottom-left-radius: 999px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-left: 12px;
-    padding-right: 12px;
-    color: #FFFFFF;
-    background-color: #000000;
-    white-space: nowrap;
-}
-
-.css-lWgfA:disabled {
-    cursor: not-allowed;
-    background-color: #F3F3F3;
-    color: #A6A6A6;
-}
-
-.css-lWgfA:focus-visible {
-    box-shadow: inset 0 0 0 2px #FFFFFF, 0 0 0 2px #276EF1;
-}
-
-@media (hover: hover) {
-    .css-lWgfA:hover {
-        box-shadow: inset 999px 999px 0px rgba(255, 255, 255, 0.1);
-    }
-}
-
-.css-lWgfA:active {
-    box-shadow: inset 999px 999px 0px rgba(255, 255, 255, 0.2);
-}
 
 .css-cDENyl {
     display: -webkit-box;
@@ -2301,21 +2043,7 @@ label {
     padding-right: 0;
 }
 
-.hamburger__icon_x {
-    display: none;
-}
-
-.hamburger__icon_two-lines {
-    display: block;
-}
-
-.css-hipXel:has(input[type="checkbox"]:checked) .hamburger__icon_x {
-    display: block;
-}
-
-.css-hipXel:has(input[type="checkbox"]:checked) .hamburger__icon_two-lines {
-    display: none;
-}
+/* Removed legacy hamburger icon rules - using Bootstrap navbar toggler instead. */
 
 .css-daInXa {
     display: -webkit-inline-box;
@@ -8691,5 +8419,35 @@ label {
     }
     .site-navbar .navbar-collapse .navbar-nav li {
         margin: 0 !important;
+    }
+
+    /* Feedback page styling to match site spacing and card visuals */
+    .feedback-page .feedback-card {
+        box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+        border-radius: 8px;
+        overflow: visible;
+    }
+    .feedback-page .feedback-card .card-body {
+        padding: 18px;
+    }
+    .feedback-page h1.h4 {
+        font-size: 1.25rem;
+        margin-bottom: 0.75rem;
+    }
+    .feedback-page .form-label {
+        font-weight: 500;
+        margin-bottom: 0.35rem;
+    }
+    .feedback-page .form-control,
+    .feedback-page .form-select {
+        border-radius: 6px;
+        padding: 0.55rem 0.625rem;
+    }
+    .feedback-page .btn-primary {
+        background-color: #1b6ec2;
+        border-color: #1861ac;
+    }
+    .feedback-page .alert {
+        margin-top: 0.5rem;
     }
 }
